@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "google-stitch": {
+      "command": "npx",
+      "args": ["-y", "@google/stitch-mcp-server@latest"],
+      "env": {
+        "STITCH_API_KEY": "STITCH_API_KEY_CONFIGURED",
+        "STITCH_MODE": "GLOBAL_SKILLS"
+      }
+    }
+  },
+  "stitchSkills": [
+    "Stitch Loop",
+    "Convertisseur React",
+    "Component Integrator",
+    "System Prompts"
+  ]
+}

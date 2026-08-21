@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Peyi — Plateforme d'emploi et de recrutement en Haïti</title>
+<meta name="description" content="Trouvez un emploi ou recrutez des talents en Haïti sur Job Peyi (JOB PEYI). CDD, Prestations, Freelance & Journalier.">
+<meta name="keywords" content="Job Peyi, JOB PEYI, emploi Haiti, travail Haiti, recrutement Haiti, CV Haiti">
+<meta property="og:title" content="Job Peyi — Plateforme d'emploi et de recrutement en Haïti">
+<meta property="og:description" content="Trouvez un emploi ou recrutez des talents en Haïti sur Job Peyi.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Plus Jakarta Sans','Inter','system-ui','sans-serif']},colors:{brand:{50:'#eef4ff',100:'#d9e5ff',200:'#bcd2ff',300:'#8eb5ff',400:'#598dff',500:'#3366ff',600:'#1a47f5',700:'#1237e1',800:'#142eb6',900:'#16298f',950:'#0f1a57'},haiti:{blue:'#00209f',red:'#d21034'}},animation:{'fade-in':'fadeIn .4s cubic-bezier(.16,1,.3,1) forwards','slide-up':'slideUp .4s cubic-bezier(.16,1,.3,1) forwards','slide-down':'slideDown .35s cubic-bezier(.16,1,.3,1) forwards','pop':'pop .3s cubic-bezier(.34,1.56,.64,1) forwards','shimmer':'shimmer 2.5s linear infinite','float-1':'float1 20s ease-in-out infinite','float-2':'float2 25s ease-in-out infinite','float-3':'float3 18s ease-in-out infinite'},keyframes:{fadeIn:{'0%':{opacity:'0',transform:'translateY(10px)'},'100%':{opacity:'1',transform:'translateY(0)'}},slideUp:{'0%':{opacity:'0',transform:'translateY(24px)'},'100%':{opacity:'1',transform:'translateY(0)'}},slideDown:{'0%':{opacity:'0',transform:'translateY(-10px) scale(.98)'},'100%':{opacity:'1',transform:'translateY(0) scale(1)'}},pop:{'0%':{transform:'scale(.92)',opacity:'0'},'70%':{transform:'scale(1.02)'},'100%':{transform:'scale(1)',opacity:'1'}},shimmer:{'0%':{backgroundPosition:'-200% 0'},'100%':{backgroundPosition:'200% 0'}},float1:{'0%,100%':{transform:'translate(0,0) rotate(0deg)'},'50%':{transform:'translate(60px,50px) rotate(-3deg)'}},float2:{'0%,100%':{transform:'translate(0,0) rotate(0deg)'},'50%':{transform:'translate(-60px,-40px) rotate(3deg)'}},float3:{'0%,100%':{transform:'translate(0,0) scale(1)'},'50%':{transform:'translate(40px,-50px) scale(1.1)'}}}}}}
+</script>
+<script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans','Inter',system-ui,sans-serif;background:#030712;color:#f1f5f9;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:#3366ff;color:#fff}
+
+.mesh-bg{position:fixed;inset:0;z-index:0;overflow:hidden;background:#030712}
+.mesh-orb{position:absolute;border-radius:50%;filter:blur(110px);opacity:.32;will-change:transform}
+.mesh-orb-1{width:650px;height:650px;background:radial-gradient(circle,#1d4ed8 0%,#3b82f6 40%,transparent 70%);top:-10%;left:-5%;animation:float1 20s ease-in-out infinite}
+.mesh-orb-2{width:580px;height:580px;background:radial-gradient(circle,#dc2626 0%,#ef4444 40%,transparent 70%);bottom:-12%;right:-6%;animation:float2 25s ease-in-out infinite}
+.mesh-orb-3{width:480px;height:480px;background:radial-gradient(circle,#7c3aed 0%,#8b5cf6 30%,transparent 70%);top:40%;left:50%;animation:float3 18s ease-in-out infinite;opacity:.18}
+
+@keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(60px,50px)}}
+@keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-60px,-40px)}}
+@keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-50px) scale(1.1)}}
+
+.glass{background:rgba(255,255,255,.04);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);border:1px solid rgba(255,255,255,.08)}
+.glass-strong{background:rgba(255,255,255,.07);backdrop-filter:blur(30px) saturate(200%);-webkit-backdrop-filter:blur(30px) saturate(200%);border:1px solid rgba(255,255,255,.12)}
+.glass-nav{background:rgba(6,10,23,.82);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,.08)}
+.glass-card{background:rgba(15,23,42,.62);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.06);transition:all .35s cubic-bezier(.16,1,.3,1)}
+.glass-card:hover{background:rgba(15,23,42,.78);border-color:rgba(255,255,255,.14);transform:translateY(-3px);box-shadow:0 20px 40px -12px rgba(0,0,0,.5),0 0 0 1px rgba(59,130,246,.15)}
+
+.btn-primary{background:linear-gradient(135deg,#1d4ed8 0%,#3b82f6 50%,#60a5fa 100%);color:#fff;font-weight:700;border:none;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.16,1,.3,1)}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);background-size:200% 100%;animation:shimmer 2.5s linear infinite}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px -10px rgba(59,130,246,.6)}
+.btn-haiti{background:linear-gradient(135deg,#00209f 0%,#1d4ed8 40%,#d21034 100%);color:#fff;font-weight:700;position:relative;overflow:hidden;transition:all .3s cubic-bezier(.16,1,.3,1)}
+.btn-haiti::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);background-size:200% 100%;animation:shimmer 2.5s linear infinite}
+.btn-haiti:hover{transform:translateY(-2px);box-shadow:0 10px 35px -10px rgba(0,32,159,.5),0 10px 35px -10px rgba(210,16,52,.4)}
+.btn-ghost{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:#e2e8f0;font-weight:600;transition:all .3s}
+.btn-ghost:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2)}
+.btn-white{background:#fff;color:#0f172a;font-weight:700;border:1px solid #e2e8f0;transition:all .3s}
+.btn-white:hover{background:#f8fafc;box-shadow:0 8px 25px -8px rgba(0,0,0,.2)}
+
+.input-dark{background:rgba(15,23,42,.6);border:1.5px solid rgba(255,255,255,.08);color:#f1f5f9;transition:all .3s}
+.input-dark:focus{outline:none;border-color:#3b82f6;box-shadow:0 0 0 3px rgba(59,130,246,.18);background:rgba(15,23,42,.85)}
+.input-dark::placeholder{color:#64748b}
+
+.gradient-text-haiti{background:linear-gradient(135deg,#3b82f6 0%,#60a5fa 40%,#f87171 70%,#dc2626 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.glow-ring{box-shadow:0 0 0 1px rgba(59,130,246,.3),0 0 25px -5px rgba(59,130,246,.25)}
+
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(100,116,139,.3);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:rgba(100,116,139,.5)}
+
+.spinner{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.15);border-top-color:#3b82f6;border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+
+.badge{font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:4px 10px;border-radius:9999px;display:inline-flex;align-items:center;gap:4px}
+#constellation{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.55}
+</style>
+</head>
+<body>
+
+<div class="mesh-bg" aria-hidden="true">
+  <div class="mesh-orb mesh-orb-1"></div>
+  <div class="mesh-orb mesh-orb-2"></div>
+  <div class="mesh-orb mesh-orb-3"></div>
+</div>
+
+<canvas id="constellation"></canvas>
+<div id="root" style="position:relative;z-index:10"></div>
+
+<script type="text/babel">
+const{useState,useMemo,useEffect,useCallback,useRef}=React;
+
+const SUPABASE_URL = 'https://bibhayjqtguuiaczymcg.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_VVS5fnGsspuPFXNzKtLjBw_MYpGf-de';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const DEPTS=["Ouest (Port-au-Prince, Pétion-Ville, Delmas)","Nord (Cap-Haïtien, Limonade)","Artibonite (Gonaïves, Saint-Marc)","Sud (Les Cayes)","Sud-Est (Jacmel)","Nord-Est (Fort-Liberté, Ouanaminthe)","Nord-Ouest (Port-de-Paix)","Centre (Mirebalais, Hinche)","Grand'Anse (Jérémie)","Nippes (Miragoâne)"];
+const CONTRACTS=[{id:"CDD",label:"CDD (Durée Déterminée)"},{id:"PRESTATION",label:"Prestation de Service"},{id:"FREELANCE",label:"Freelance / Indépendant"},{id:"JOURNALIER",label:"Journalier / Mission Courte"}];
+const PRESENCE=[{id:"PRESENTIEL",label:"Présentiel"},{id:"HYBRIDE",label:"Hybride"},{id:"REMOTE",label:"À Distance"}];
+
+/* ━━━ ICONS ━━━ */
+const IconSearch=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>;
+const IconBriefcase=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>;
+const IconUser=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>;
+const IconMapPin=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>;
+const IconCheck=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>;
+const IconArrowRight=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>;
+const IconShield=()=><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+const IconDatabase=()=><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>;
+const IconPhone=()=><svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>;
+const IconLogOut=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
+const IconChevron=()=><svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>;
+const IconPlus=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>;
+const IconBack=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>;
+const IconFile=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>;
+const IconMessage=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>;
+const IconDollar=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>;
+const IconSend=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>;
+const IconEdit=()=><svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>;
+
+function App(){
+  const[authUser,setAuthUser]=useState(null);
+  const[profile,setProfile]=useState(null);
+  const[authLoading,setAuthLoading]=useState(true);
+  const[jobs,setJobs]=useState([]);
+  const[myApps,setMyApps]=useState([]);
+  const[receivedApps,setReceivedApps]=useState([]);
+  const[candidates,setCandidates]=useState([]);
+  const[stats,setStats]=useState({jobs:0,candidats:0,recruteurs:0});
+  const[view,setView]=useState("HOME");
+  const[toasts,setToasts]=useState([]);
+  const[modalJob,setModalJob]=useState(null);
+  const[regTab,setRegTab]=useState("CANDIDAT");
+  const[loading,setLoading]=useState(false);
+  const[userCardOpen,setUserCardOpen]=useState(false);
+  const[mobileMenuOpen,setMobileMenuOpen]=useState(false);
+
+  /* MESSAGERIE & REALTIME STATE */
+  const[activeChatApp,setActiveChatApp]=useState(null);
+  const[chatMessages,setChatMessages]=useState([]);
+  const[msgInput,setMsgInput]=useState("");
+  const[offerModalOpen,setOfferModalOpen]=useState(false);
+  const[offerAmount,setOfferAmount]=useState("");
+  const[offerDevise,setOfferDevise]=useState("HTG");
+  const chatBottomRef=useRef(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  /* SEARCH & FILTERS */
+  const[sq,setSq]=useState("");
+  const[sd,setSd]=useState("");
+  const[sc,setSc]=useState("");
+  const[cvQ,setCvQ]=useState("");
+  const[cvD,setCvD]=useState("");
+
+  const toast=(msg,type="success")=>{
+    const id=Date.now()+Math.random();
+    setToasts(p=>[...p,{id,msg,type}]);
+    setTimeout(()=>setToasts(p=>p.filter(t=>t.id!==id)),5000);
+  };
+
+  useEffect(()=>{
+    sb.auth.getSession().then(({data:{session}})=>{
+      setAuthUser(session?.user||null);
+      if(session?.user) loadProfile(session.user.id, session.user);
+      setAuthLoading(false);
+    });
+    const{data:{subscription}}=sb.auth.onAuthStateChange((_event,session)=>{
+      setAuthUser(session?.user||null);
+      if(session?.user) loadProfile(session.user.id, session.user);
+      else setProfile(null);
+    });
+    return()=>subscription.unsubscribe();
+  },[]);
+
+  const loadProfile=async(userId, authUserObj)=>{
+    // Clear stale cache to always get fresh data
+    sessionStorage.removeItem(`profile_${userId}`);
+    try{
+      const{data}=await sb.from('profiles').select('*').eq('user_id',userId).maybeSingle();
+      if(data){
+        setProfile(data);
+        sessionStorage.setItem(`profile_${userId}`, JSON.stringify(data));
+        return data;
+      } else {
+        // Profile not found in DB (trigger may have failed) → create it from auth metadata
+        const meta = authUserObj?.user_metadata || {};
+        const roleRaw = (meta.role||meta.user_role||'').toUpperCase();
+        const role = roleRaw==='RECRUTEUR' ? 'RECRUTEUR' : 'CANDIDAT';
+        const newProfile = {
+          user_id: userId,
+          role,
+          nom: meta.nom||'',
+          prenom: meta.prenom||'',
+          nom_entreprise: meta.nom_entreprise||'',
+          telephone: meta.telephone||'',
+          whatsapp: meta.whatsapp||'',
+          departement: meta.departement||'',
+          ville: meta.ville||'',
+          cin_nif: meta.cin_nif||'',
+          titre_pro: meta.titre_pro||'',
+          competences: meta.competences||'',
+          bio: meta.bio||'',
+          nif_patente: meta.nif_patente||'',
+          description: meta.description||''
+        };
+        try{
+          const{data:created}=await sb.from('profiles').upsert(newProfile,{onConflict:'user_id'}).select().maybeSingle();
+          const finalProfile = created || newProfile;
+          setProfile(finalProfile);
+          sessionStorage.setItem(`profile_${userId}`, JSON.stringify(finalProfile));
+          return finalProfile;
+        }catch(createErr){
+          // If insert fails, at least set local profile so UI works
+          setProfile(newProfile);
+          return newProfile;
+        }
+      }
+    }catch(err){console.warn("Profile load:", err);}
+    return null;
+  };
+
+  const loadJobs=async()=>{
+    const cached = sessionStorage.getItem('jobs_cache');
+    if(cached) setJobs(JSON.parse(cached));
+    try{
+      const{data, error}=await sb.from('jobs').select('*').order('created_at',{ascending:false});
+      if(error) throw error;
+      if(data) {
+        // Collect recruiter ids to enrich with company details if available
+        const recIds = [...new Set(data.map(j=>j.recruteur_id).filter(Boolean))];
+        let pMap = {};
+        if(recIds.length > 0) {
+          try {
+            const { data: profs } = await sb.from('profiles').select('id, nom_entreprise, logo_url, telephone, whatsapp').in('id', recIds);
+            if(profs) profs.forEach(p => { pMap[p.id] = p; });
+          } catch(pe) {}
+        }
+        const mapped = data.map(j=>({
+          ...j,
+          nom_entreprise: pMap[j.recruteur_id]?.nom_entreprise || j.nom_entreprise || 'Entreprise Partenaire',
+          profiles: pMap[j.recruteur_id] || { nom_entreprise: j.nom_entreprise || 'Entreprise Partenaire' }
+        }));
+        setJobs(mapped);
+        sessionStorage.setItem('jobs_cache', JSON.stringify(mapped));
+      }
+    }catch(err){console.warn("Jobs load:", err);}
+  };
+
+  const loadStats=async()=>{
+    const cached = sessionStorage.getItem('stats_cache');
+    if(cached) setStats(JSON.parse(cached));
+    try{
+      const[j,c,r]=await Promise.all([
+        sb.from('jobs').select('id',{count:'exact',head:true}).eq('statut','ACTIF'),
+        sb.from('profiles').select('id',{count:'exact',head:true}).eq('role','CANDIDAT'),
+        sb.from('profiles').select('id',{count:'exact',head:true}).eq('role','RECRUTEUR'),
+      ]);
+      const newStats = {jobs:j.count||0,candidats:c.count||0,recruteurs:r.count||0};
+      setStats(newStats);
+      sessionStorage.setItem('stats_cache', JSON.stringify(newStats));
+    }catch(err){console.warn("Stats load:", err);}
+  };
+
+  const loadMyApps=async()=>{
+    if(!profile)return;
+    try{
+      const{data}=await sb.from('applications').select('*, jobs(*)').eq('candidat_id',profile.id).order('applied_at',{ascending:false});
+      if(data) {
+        const recIds = [...new Set(data.map(a => a.jobs?.recruteur_id).filter(Boolean))];
+        let pMap = {};
+        if(recIds.length > 0) {
+          try {
+            const { data: profs } = await sb.from('profiles').select('id, nom_entreprise, telephone, whatsapp').in('id', recIds);
+            if(profs) profs.forEach(p => { pMap[p.id] = p; });
+          } catch(pe) {}
+        }
+        const mapped = data.map(a => ({
+          ...a,
+          jobs: a.jobs ? {
+            ...a.jobs,
+            profiles: pMap[a.jobs.recruteur_id] || { nom_entreprise: 'Entreprise' }
+          } : null
+        }));
+        setMyApps(mapped);
+      }
+    }catch(err){console.warn("My apps load:", err);}
+  };
+
+  const loadReceivedApps=async()=>{
+    if(!profile)return;
+    try{
+      const { data: recJobs } = await sb.from('jobs').select('id, titre, recruteur_id').eq('recruteur_id', profile.id);
+      if(!recJobs || recJobs.length === 0) {
+        setReceivedApps([]);
+        return;
+      }
+      const jobIds = recJobs.map(j => j.id);
+      const jobsMap = {};
+      recJobs.forEach(j => { jobsMap[j.id] = j; });
+
+      const{data: apps}=await sb.from('applications').select('*, profiles(*)').in('job_id', jobIds).order('applied_at',{ascending:false});
+      if(apps) {
+        const mapped = apps.map(a => ({
+          ...a,
+          jobs: jobsMap[a.job_id] || a.jobs || {},
+          profiles: a.profiles || {}
+        }));
+        setReceivedApps(mapped);
+      }
+    }catch(err){console.warn("Received apps load:", err);}
+  };
+
+  const loadCandidates=async()=>{
+    const cached = sessionStorage.getItem('candidates_cache');
+    if(cached) setCandidates(JSON.parse(cached));
+    try{
+      const{data}=await sb.from('profiles').select('*').eq('role','CANDIDAT').order('created_at',{ascending:false});
+      if(data) {
+        setCandidates(data);
+        sessionStorage.setItem('candidates_cache', JSON.stringify(data));
+      }
+    }catch(err){console.warn("Candidates load:", err);}
+  };
+
+  useEffect(()=>{loadJobs();loadStats()},[]);
+  useEffect(()=>{
+    if(view==="JOBS"||view==="HOME") loadJobs();
+    if(view==="CV_BANK") loadCandidates();
+    if(view==="CANDIDAT_DASH"||view==="MESSAGES") loadMyApps();
+    if(view==="RECRUTEUR_DASH"||view==="MESSAGES") {loadJobs();loadReceivedApps()}
+    // Reset unread badge when user navigates to Messagerie
+    if(view==="MESSAGES" && profile?.id) {
+      setUnreadCount(0);
+    }
+  },[view,profile]);
+
+  /* REALTIME MESSAGES SUBSCRIPTION */
+  useEffect(()=>{
+    if(!activeChatApp) return;
+    // Mark messages as read when opening conversation
+    markAsRead(activeChatApp.id);
+    
+    // Load existing messages for this application
+    const fetchMsgs=async()=>{
+      try{
+        const{data}=await sb.from('messages').select('*, profiles!sender_id(nom, prenom, nom_entreprise)').eq('application_id',activeChatApp.id).order('created_at',{ascending:true});
+        if(data) setChatMessages(data);
+      }catch(err){console.warn("Fetch msgs:", err);}
+    };
+    fetchMsgs();
+
+    // Supabase Realtime Channel
+    const channel = sb.channel(`chat:${activeChatApp.id}`)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `application_id=eq.${activeChatApp.id}` }, (payload) => {
+        setChatMessages(prev => [...prev, payload.new]);
+      })
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: `application_id=eq.${activeChatApp.id}` }, (payload) => {
+        setChatMessages(prev => prev.map(m => m.id === payload.new.id ? payload.new : m));
+      })
+      .subscribe();
+
+    return () => { sb.removeChannel(channel); };
+  },[activeChatApp]);
+
+  /* ── GLOBAL INBOX: unread badge + toast notifications ── */
+  const loadUnread = async (profileId) => {
+    try {
+      const {count} = await sb.from('messages')
+        .select('*', {count: 'exact', head: true})
+        .eq('recipient_id', profileId)
+        .eq('is_read', false);
+      setUnreadCount(count || 0);
+    } catch(e) { console.warn('loadUnread:', e); }
+  };
+
+  useEffect(()=>{
+    if(!profile?.id) return;
+    loadUnread(profile.id);
+
+    const inbox = sb.channel(`inbox:${profile.id}`)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'messages',
+        filter: `recipient_id=eq.${profile.id}`
+      }, (payload) => {
+        setUnreadCount(prev => prev + 1);
+        // Toast only if not currently viewing that chat
+        const senderName = payload.new?.sender_name || 'quelqu\'un';
+        if(view !== 'MESSAGES') {
+          toast(`💬 Nouveau message reçu !`, 'info');
+        }
+      })
+      .subscribe();
+
+    return () => { sb.removeChannel(inbox); };
+  }, [profile?.id]);
+
+  const markAsRead = async (appId) => {
+    if(!profile?.id) return;
+    try {
+      await sb.from('messages')
+        .update({is_read: true})
+        .eq('application_id', appId)
+        .eq('recipient_id', profile.id)
+        .eq('is_read', false);
+      // Refresh unread count
+      loadUnread(profile.id);
+    } catch(e) { console.warn('markAsRead:', e); }
+  };
+
+  useEffect(()=>{
+    if(chatBottomRef.current) chatBottomRef.current.scrollIntoView({behavior:'smooth'});
+  },[chatMessages]);
+
+  const sendMessage=async(e)=>{
+    if(e) e.preventDefault();
+    if(!msgInput.trim()||!activeChatApp||!profile) return;
+    const recipientId = profile.role==="CANDIDAT" ? activeChatApp.jobs?.profiles?.id : activeChatApp.profiles?.id;
+    const content = msgInput.trim();
+    setMsgInput("");
+
+    try{
+      const{data,error}=await sb.from('messages').insert({
+        application_id: activeChatApp.id,
+        sender_id: profile.id,
+        recipient_id: recipientId,
+        content: content,
+        is_read: false
+      }).select().single();
+      if(data) setChatMessages(prev=>[...prev, data]);
+    }catch(err){
+      console.warn("Send msg fallback:", err);
+      // Local realtime broadcast fallback
+      setChatMessages(prev=>[...prev, {id: Date.now(), sender_id: profile.id, content, created_at: new Date().toISOString()}]);
+    }
+  };
+
+  const sendOfferProposal=async()=>{
+    if(!offerAmount || !activeChatApp || !profile) return;
+    const recipientId = profile.role==="CANDIDAT" ? activeChatApp.jobs?.profiles?.id : activeChatApp.profiles?.id;
+    const content = `💼 Proposition financière : ${offerAmount} ${offerDevise}`;
+    setOfferModalOpen(false);
+
+    try{
+      const{data}=await sb.from('messages').insert({
+        application_id: activeChatApp.id,
+        sender_id: profile.id,
+        recipient_id: recipientId,
+        content: content,
+        proposition_tarif: parseFloat(offerAmount),
+        devise: offerDevise,
+        statut_tarif: 'PROPOSE'
+      }).select().single();
+      if(data) setChatMessages(prev=>[...prev, data]);
+      toast("Proposition financière envoyée !");
+    }catch(err){
+      toast("Erreur d'envoi de la proposition", "error");
+    }
+  };
+
+  const respondOffer=async(msgId, statut)=>{
+    try{
+      await sb.from('messages').update({statut_tarif: statut}).eq('id', msgId);
+      setChatMessages(prev=>prev.map(m=>m.id===msgId?{...m, statut_tarif: statut}:m));
+      toast(statut==='ACCEPTE' ? "🎉 Accord tarifaire validé !" : "Proposition déclinée.");
+    }catch(err){toast("Erreur lors de la réponse", "error");}
+  };
+
+  const viewFile=async(bucket,path)=>{
+    if(!path) { toast("Aucun fichier téléversé pour ce profil.", "error"); return; }
+    try{
+      const{data,error}=await sb.storage.from(bucket).createSignedUrl(path,300);
+      if(error){ toast("Erreur de récupération : "+error.message,"error"); return; }
+      if(data?.signedUrl) window.open(data.signedUrl,'_blank');
+    }catch(err){
+      toast("Erreur d'accès : "+err.message,"error");
+    }
+  };
+
+  /* CANDIDATE SMART JOB ALERTS MATCH */
+  const matchingJobsCount = useMemo(()=>{
+    if(!profile||profile.role!=="CANDIDAT"||!profile.titre_pro) return 0;
+    const kw = profile.titre_pro.toLowerCase();
+    return jobs.filter(j=>j.titre.toLowerCase().includes(kw)||j.description.toLowerCase().includes(kw)).length;
+  },[jobs,profile]);
+
+  /* AUTH HANDLERS */
+  const handleRegisterCandidat=async(e)=>{
+    e.preventDefault();const f=e.target;
+    if(!f.age18.checked){toast("Vous devez confirmer avoir au moins 18 ans.","error");return}
+    const email=f.email.value.trim().toLowerCase();const password=f.pwd.value;
+    const nom=f.nom.value.trim();const prenom=f.prenom.value.trim();
+    const tel=f.tel.value.trim();const wa=(f.wa.value||f.tel.value).trim();
+    const dept=f.dept.value;const ville=f.ville.value.trim();
+    const cinNif=f.cinNif.value.trim();const titre=f.titre.value.trim();
+    const comp=f.comp.value.trim();const bio=f.bio.value.trim();
+    setLoading(true);
+
+    try{
+      const{data,error}=await sb.auth.signUp({
+        email,password,
+        options:{data:{role:'CANDIDAT',user_role:'candidat',nom,prenom,telephone:tel,whatsapp:wa,departement:dept,ville,cin_nif:cinNif,titre_pro:titre,competences:comp,bio}}
+      });
+      if(error){toast("Erreur d'inscription: "+error.message,"error");setLoading(false);return}
+      if(data?.user){
+        const uid=data.user.id;let cvUrl=null,cinUrl=null;
+        const cvFile=f.cvFile.files[0];const cinFile=f.cinFile.files[0];
+        if(cvFile){
+          const cleanName=cvFile.name.replace(/[^a-zA-Z0-9.]/g,"_");
+          const{data:cvData}=await sb.storage.from('cv-files').upload(`${uid}/${cleanName}`,cvFile,{upsert:true});
+          if(cvData) cvUrl=cvData.path;
+        }
+        if(cinFile){
+          const cleanName=cinFile.name.replace(/[^a-zA-Z0-9.]/g,"_");
+          const{data:cinData}=await sb.storage.from('cin-files').upload(`${uid}/${cleanName}`,cinFile,{upsert:true});
+          if(cinData) cinUrl=cinData.path;
+        }
+        try{
+          await sb.from('profiles').upsert({user_id:uid,role:'CANDIDAT',nom,prenom,telephone:tel,whatsapp:wa,departement:dept,ville,cin_nif:cinNif,titre_pro:titre,competences:comp,bio,cv_url:cvUrl,cin_url:cinUrl},{onConflict:'user_id'});
+        }catch(pErr){}
+        setAuthUser(data.user);await loadProfile(uid, data.user);
+        setView("CANDIDAT_DASH");toast("🎉 Compte Candidat créé avec succès !");
+      }
+    }catch(err){toast("Erreur: "+err.message,"error");}
+    finally{setLoading(false);}
+  };
+
+  const handleRegisterRecruteur=async(e)=>{
+    e.preventDefault();const f=e.target;
+    const email=f.email.value.trim().toLowerCase();const password=f.pwd.value;
+    const nomE=f.nomE.value.trim();const tel=f.tel.value.trim();
+    const nif=f.nif.value.trim();const dept=f.dept.value;const desc=f.desc.value.trim();
+    setLoading(true);
+
+    try{
+      const{data,error}=await sb.auth.signUp({
+        email,password,
+        options:{data:{role:'RECRUTEUR',user_role:'recruteur',nom_entreprise:nomE,telephone:tel,nif_patente:nif,departement:dept,description:desc}}
+      });
+      if(error){toast("Erreur d'inscription: "+error.message,"error");setLoading(false);return}
+      if(data?.user){
+        const uid=data.user.id;
+        try{
+          await sb.from('profiles').upsert({user_id:uid,role:'RECRUTEUR',nom_entreprise:nomE,telephone:tel,nif_patente:nif,departement:dept,description:desc},{onConflict:'user_id'});
+        }catch(pErr){}
+        setAuthUser(data.user);await loadProfile(uid, data.user);
+        setView("RECRUTEUR_DASH");toast("🎉 Compte Recruteur créé ! Publiez vos offres.");
+      }
+    }catch(err){toast("Erreur: "+err.message,"error");}
+    finally{setLoading(false);}
+  };
+
+  const handleLogin=async(e)=>{
+    e.preventDefault();const f=e.target;
+    const email=f.email.value.trim().toLowerCase();const password=f.pwd.value;
+    setLoading(true);
+    try{
+      const{data,error}=await sb.auth.signInWithPassword({email,password});
+      if(error){
+        if(error.message?.includes("Invalid login credentials")) toast("Email ou mot de passe incorrect.","error");
+        else if(error.message?.includes("Email not confirmed")) toast("Veuillez confirmer votre email dans Supabase.","error");
+        else toast(error.message,"error");
+        setLoading(false);return;
+      }
+      if(data?.user){
+        setAuthUser(data.user);
+        const p = await loadProfile(data.user.id, data.user);
+        toast("✅ Connexion réussie !");
+        // Redirect to role-specific dashboard
+        if(p?.role==="RECRUTEUR") setView("RECRUTEUR_DASH");
+        else setView("CANDIDAT_DASH");
+      }
+    }catch(err){toast("Erreur: "+err.message,"error");}
+    finally{setLoading(false);}
+  };
+
+  const handleUpdateProfile=async(e)=>{
+    e.preventDefault();const f=e.target;
+    setLoading(true);
+    try{
+      const updates = profile.role==='CANDIDAT' ? {
+        titre_pro: f.titre.value.trim(),
+        competences: f.comp.value.trim(),
+        bio: f.bio.value.trim(),
+        telephone: f.tel.value.trim(),
+        whatsapp: f.wa.value.trim(),
+        departement: f.dept.value,
+        ville: f.ville.value.trim(),
+        cin_nif: f.cinNif.value.trim()
+      } : {
+        nom_entreprise: f.nomE.value.trim(),
+        telephone: f.tel.value.trim(),
+        nif_patente: f.nif.value.trim(),
+        departement: f.dept.value,
+        description: f.desc.value.trim()
+      };
+
+      // Handle new CV upload if provided
+      if(profile.role==='CANDIDAT' && f.newCv?.files[0]){
+        const file = f.newCv.files[0];
+        const cleanName = file.name.replace(/[^a-zA-Z0-9.]/g,"_");
+        const{data:cvData}=await sb.storage.from('cv-files').upload(`${authUser.id}/${cleanName}`,file,{upsert:true});
+        if(cvData) updates.cv_url = cvData.path;
+      }
+
+      const{error}=await sb.from('profiles').update(updates).eq('id',profile.id);
+      if(error) throw error;
+      setProfile(p=>({...p,...updates}));
+      toast("✅ Profil mis à jour avec succès !");
+    }catch(err){toast("Erreur: "+err.message,"error");}
+    finally{setLoading(false);}
+  };
+
+  const logout=async()=>{
+    const uid=authUser?.id;await sb.auth.signOut();
+    if(uid) sessionStorage.removeItem(`profile_${uid}`);
+    setProfile(null);setAuthUser(null);setView("HOME");toast("Déconnexion effectuée.");
+  };
+
+  const handlePostJob=async(e)=>{
+    e.preventDefault();const f=e.target;setLoading(true);
+    try{
+      const{error}=await sb.from('jobs').insert({
+        recruteur_id:profile.id,
+        titre:f.titre.value.trim(),description:f.desc.value.trim(),
+        type_contrat:f.contrat.value,type_presence:f.presence.value,
+        salaire_range:f.salaire.value.trim(),devise:f.devise.value,
+        departement:f.dept.value,ville:f.ville.value.trim(),statut:'ACTIF'
+      });
+      if(error) throw error;
+      toast("🚀 Offre publiée avec succès sur Job Peyi !");
+      setView("RECRUTEUR_DASH");loadJobs();loadStats();
+    }catch(err){toast("Erreur: "+err.message,"error");}
+    finally{setLoading(false);}
+  };
+
+  const toggleJobStatus=async(jobId, currentStatut)=>{
+    const newStatut = currentStatut === 'ACTIF' ? 'FERME' : 'ACTIF';
+    try{
+      await sb.from('jobs').update({statut: newStatut}).eq('id', jobId);
+      setJobs(prev=>prev.map(j=>j.id===jobId?{...j,statut:newStatut}:j));
+      toast(`Offre ${newStatut==='ACTIF'?'réactivée':'clôturée'}.`);
+    }catch(err){toast("Erreur de modification du statut","error");}
+  };
+
+  const tryApply=(job)=>{
+    if(!authUser||!profile||profile.role!=="CANDIDAT"){
+      setView("LOGIN");toast("Veuillez vous connecter en tant que Candidat pour postuler.","error");return;
+    }
+    setModalJob(job);
+  };
+
+  const confirmApplyWithNegotiation=async(e)=>{
+    e.preventDefault();const f=e.target;setLoading(true);
+    const pretention = f.pretention.value.trim();
+    const devise = f.devise.value;
+    const periode = f.periode.value;
+    const motivationMsg = f.motiv.value.trim() || "Candidature via Job Peyi";
+    const fullMotivation = `💰 Prétention souhaitée : ${pretention} ${devise} ${periode}\n\n📝 Message : ${motivationMsg}`;
+
+    try{
+      let specificCvUrl = profile.cv_url;
+      if(f.customCv?.files[0]){
+        const file = f.customCv.files[0];
+        const cleanName = file.name.replace(/[^a-zA-Z0-9.]/g,"_");
+        const{data:cvData}=await sb.storage.from('cv-files').upload(`${authUser.id}/${cleanName}`,file,{upsert:true});
+        if(cvData) specificCvUrl = cvData.path;
+      }
+
+      const{data,error}=await sb.from('applications').insert({
+        job_id:modalJob.id,
+        candidat_id:profile.id,
+        motivation:fullMotivation,
+        statut:'EN_ATTENTE'
+      }).select().single();
+
+      if(error){
+        if(error.code==='23505') toast("Vous avez déjà postulé à cette offre.","error");
+        else throw error;
+        setLoading(false);return;
+      }
+
+      // Automatically create an initial discussion thread message
+      if(data){
+        await sb.from('messages').insert({
+          application_id: data.id,
+          sender_id: profile.id,
+          recipient_id: modalJob.recruteur_id,
+          content: `Nouvelle candidature reçue avec prétention salariale de ${pretention} ${devise} ${periode}.\nMotivation: ${motivationMsg}`,
+          proposition_tarif: parseFloat(pretention) || null,
+          devise: devise,
+          statut_tarif: 'PROPOSE'
+        });
+      }
+
+      setLoading(false);setModalJob(null);
+      toast(`✅ Candidature envoyée à ${modalJob.nom_entreprise} avec votre tarif négocié !`);
+      loadMyApps();
+    }catch(err){
+      toast("Erreur: "+err.message,"error");
+      setLoading(false);
+    }
+  };
+
+  const setAppStatus=async(id,statut)=>{
+    try{
+      const{error}=await sb.from('applications').update({statut}).eq('id',id);
+      if(error) throw error;
+      setReceivedApps(p=>p.map(a=>a.id===id?{...a,statut}:a));
+      toast(statut==="ACCEPTEE"?"✅ Candidature ACCEPTÉE !":statut==="EN_COURS"?"Candidature marquée en cours d'examen.":"❌ Candidature refusée.",statut==="ACCEPTEE"?"success":"error");
+    }catch(err){toast("Erreur: "+err.message,"error");}
+  };
+
+  const goGuarded=(target,requiredRole)=>{
+    if(!authUser){setView("LOGIN");toast("Veuillez vous connecter.","error");return}
+    if(requiredRole&&profile?.role!==requiredRole){toast(`Accès réservé aux ${requiredRole}s.`,"error");return}
+    setView(target);
+  };
+
+  const filteredJobs=useMemo(()=>jobs.filter(j=>{
+    const q = sq ? sq.toLowerCase() : "";
+    const mq = !q || (j.titre && j.titre.toLowerCase().includes(q)) || (j.description && j.description.toLowerCase().includes(q));
+    const md = !sd || (j.departement && j.departement.includes(sd));
+    const mc = !sc || j.type_contrat === sc;
+    return mq && md && mc;
+  }),[jobs,sq,sd,sc]);
+
+  const filteredCandidates=useMemo(()=>candidates.filter(c=>{
+    const mq=!cvQ||c.titre_pro?.toLowerCase().includes(cvQ.toLowerCase())||c.nom?.toLowerCase().includes(cvQ.toLowerCase())||(c.competences||"").toLowerCase().includes(cvQ.toLowerCase());
+    const md=!cvD||c.departement?.includes(cvD);
+    return mq&&md;
+  }),[candidates,cvQ,cvD]);
+
+  const myJobsList=useMemo(()=>profile?jobs.filter(j=>j.recruteur_id===profile.id):[],[jobs,profile]);
+
+  if(authLoading) return(
+    <div className="min-h-screen flex items-center justify-center"><div className="spinner" style={{width:36,height:36}}/></div>
+  );
+
+  return(
+    <div className="flex flex-col min-h-screen">
+      {/* TOASTS */}
+      <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-3 max-w-sm pointer-events-none">
+        {toasts.map(t=>(
+          <div key={t.id} className={`pointer-events-auto px-5 py-4 rounded-2xl text-sm font-semibold animate-slide-up flex items-center gap-3 ${t.type==="error"?"glass bg-red-500/20 border-red-500/30 text-red-200":"glass bg-emerald-500/20 border-emerald-500/30 text-emerald-200"}`} style={{boxShadow:'0 20px 40px -10px rgba(0,0,0,.5)'}}>
+            <span className="flex-shrink-0">{t.type==="error"?"✕":"✓"}</span>
+            {t.msg}
+          </div>
+        ))}
+      </div>
+
+      {/* ━━━ APPLICATION & SALARY NEGOTIATION MODAL ━━━ */}
+      {modalJob&&authUser&&profile?.role==="CANDIDAT"&&(
+        <div className="fixed inset-0 z-[90] flex items-center justify-center p-4" onClick={()=>setModalJob(null)}>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-md"/>
+          <div className="glass-strong rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 animate-pop relative max-h-[90vh] overflow-y-auto" onClick={e=>e.stopPropagation()} style={{boxShadow:'0 30px 70px -15px rgba(0,0,0,.7)'}}>
+            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+              <div>
+                <span className="badge bg-blue-500/15 text-blue-400 border border-blue-500/20 mb-1">Postulation & Négociation</span>
+                <h3 className="text-xl font-bold text-white leading-tight">{modalJob.titre}</h3>
+                <p className="text-xs text-blue-400 font-semibold mt-0.5">{modalJob.nom_entreprise} • 📍 {modalJob.departement?.split(" ")[0]}</p>
+              </div>
+              <button onClick={()=>setModalJob(null)} className="w-8 h-8 rounded-full bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">✕</button>
+            </div>
+
+            <form onSubmit={confirmApplyWithNegotiation} className="space-y-4 text-xs">
+              {/* CV SELECTOR */}
+              <div className="space-y-2">
+                <label className="block font-bold text-slate-300">1. Sélecteur de CV</label>
+                {profile.cv_url?(
+                  <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <span className="text-emerald-400">📄</span>
+                      <div>
+                        <strong className="text-white block text-xs">CV Enregistré sur votre Profil</strong>
+                        <span className="text-[10px] text-emerald-300">Prêt pour envoi immédiat en 1-clic</span>
+                      </div>
+                    </div>
+                    <button type="button" onClick={()=>viewFile('cv-files',profile.cv_url)} className="text-[10px] text-blue-400 hover:underline">Vérifier</button>
+                  </div>
+                ):(
+                  <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px]">
+                    Aucun CV enregistré sur votre profil. Veuillez en joindre un ci-dessous.
+                  </div>
+                )}
+                <div className="pt-1">
+                  <label className="block text-[11px] text-slate-400 mb-1">Ou joindre un nouveau CV personnalisé :</label>
+                  <input name="customCv" type="file" accept=".pdf,.doc,.docx" className="input-dark w-full p-2.5 rounded-xl text-[11px]"/>
+                </div>
+              </div>
+
+              {/* SALARY NEGOTIATION / PRETENTION SALARIALE */}
+              <div className="space-y-2 pt-2 border-t border-white/10">
+                <label className="block font-bold text-slate-300">2. Prétention Salariale / Tarif Souhaité</label>
+                <div className="grid grid-cols-3 gap-2">
+                  <input name="pretention" type="number" required placeholder="ex: 150000" className="input-dark col-span-1 p-2.5 rounded-xl text-sm font-bold text-emerald-400"/>
+                  <select name="devise" className="input-dark p-2.5 rounded-xl text-xs font-bold"><option value="HTG">HTG</option><option value="USD">USD</option></select>
+                  <select name="periode" className="input-dark p-2.5 rounded-xl text-xs"><option value="/ mois">Par mois</option><option value="/ mission">Par prestation</option><option value="/ jour">Par jour</option></select>
+                </div>
+                <p className="text-[10px] text-slate-400">Budget indicatif de l'entreprise : <strong className="text-white">{modalJob.salaire_range} {modalJob.devise}</strong></p>
+              </div>
+
+              {/* MOTIVATION */}
+              <div className="space-y-2 pt-2 border-t border-white/10">
+                <label className="block font-bold text-slate-300">3. Lettre de motivation rapide / Message personnalisé</label>
+                <textarea name="motiv" rows="3" placeholder="Expliquez vos compétences clés pour ce poste..." className="input-dark w-full p-3 rounded-xl text-xs resize-none"/>
+              </div>
+
+              <div className="flex gap-3 pt-3">
+                <button type="button" onClick={()=>setModalJob(null)} className="btn-ghost flex-1 py-3 rounded-xl text-xs font-bold">Annuler</button>
+                <button type="submit" disabled={loading} className="btn-haiti flex-1 py-3 rounded-xl text-xs font-bold disabled:opacity-50">
+                  {loading?<><span className="spinner mr-2"/>Envoi en cours...</>:"Postuler & Ouvrir la Négociation"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ━━━ FINANCIAL COUNTER-OFFER MODAL ━━━ */}
+      {offerModalOpen&&(
+        <div className="fixed inset-0 z-[95] flex items-center justify-center p-4" onClick={()=>setOfferModalOpen(false)}>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-md"/>
+          <div className="glass-strong rounded-3xl p-6 max-w-sm w-full space-y-4 animate-pop relative" onClick={e=>e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-white">💼 Faire une contre-proposition financière</h3>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Montant proposé</label>
+                <input type="number" value={offerAmount} onChange={e=>setOfferAmount(e.target.value)} placeholder="ex: 125000" className="input-dark w-full p-3 rounded-xl font-bold text-emerald-400 text-base"/>
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">Devise</label>
+                <select value={offerDevise} onChange={e=>setOfferDevise(e.target.value)} className="input-dark w-full p-2.5 rounded-xl font-bold"><option value="HTG">HTG</option><option value="USD">USD</option></select>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button onClick={()=>setOfferModalOpen(false)} className="btn-ghost flex-1 py-2.5 rounded-xl text-xs">Annuler</button>
+                <button onClick={sendOfferProposal} className="btn-haiti flex-1 py-2.5 rounded-xl text-xs font-bold">Envoyer l'Offre</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ━━━ DYNAMIC HEADER & NAVIGATION BAR ━━━ */}
+      <nav className="sticky top-0 z-50 w-full">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-4">
+          <div className="glass-nav rounded-2xl px-5 py-3 flex items-center justify-between" style={{boxShadow:'0 10px 40px -10px rgba(0,0,0,.4)'}}>
+            
+            {/* BRAND LOGO */}
+            <div onClick={()=>setView("HOME")} className="flex items-center gap-3 cursor-pointer group">
+              <div className="relative">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-all">
+                  <span className="text-lg font-black text-white">JP</span>
+                </div>
+                <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-red-600 border-2 border-[#060a17] flex items-center justify-center text-[7px]">🇭🇹</div>
+              </div>
+              <div className="hidden sm:block">
+                <h1 className="text-base font-extrabold text-white tracking-tight leading-none">JOB PEYI</h1>
+                <p className="text-[9px] font-medium text-slate-400 tracking-wider uppercase">République d'Haïti</p>
+              </div>
+            </div>
+
+            {/* DYNAMIC NAVIGATION LINKS BASED ON AUTH ROLE */}
+            <div className="hidden lg:flex items-center gap-1.5">
+              <button onClick={()=>setView("HOME")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="HOME"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                🏠 Accueil
+              </button>
+              <button onClick={()=>setView("JOBS")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="JOBS"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                <IconBriefcase/> Offres d'emploi
+              </button>
+
+              {/* CANDIDATE SPECIFIC TABS */}
+              {authUser&&profile?.role==="CANDIDAT"&&(
+                <>
+                  <button onClick={()=>setView("CANDIDAT_DASH")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="CANDIDAT_DASH"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    <IconFile/> Mes Candidatures <span className="badge bg-blue-500/20 text-blue-300 py-0.5 px-1.5">{myApps.length}</span>
+                  </button>
+                  <button onClick={()=>setView("MESSAGES")} className={`relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="MESSAGES"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    <IconMessage/> Messagerie
+                    {unreadCount>0&&view!=="MESSAGES"&&<span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 animate-pulse">{unreadCount>9?'9+':unreadCount}</span>}
+                  </button>
+                  <button onClick={()=>setView("PROFIL_EDIT")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="PROFIL_EDIT"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    <IconUser/> Mon Profil
+                  </button>
+                </>
+              )}
+
+              {/* RECRUITER SPECIFIC TABS */}
+              {authUser&&profile?.role==="RECRUTEUR"&&(
+                <>
+                  <button onClick={()=>setView("POST_JOB")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="POST_JOB"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    <IconPlus/> Publier une offre
+                  </button>
+                  <button onClick={()=>setView("RECRUTEUR_DASH")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="RECRUTEUR_DASH"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    👥 Gestion Candidats <span className="badge bg-purple-500/20 text-purple-300 py-0.5 px-1.5">{receivedApps.length}</span>
+                  </button>
+                  <button onClick={()=>setView("CV_BANK")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="CV_BANK"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    🗂️ Banque de CV
+                  </button>
+                  <button onClick={()=>setView("MESSAGES")} className={`relative flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="MESSAGES"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    <IconMessage/> Messagerie
+                    {unreadCount>0&&view!=="MESSAGES"&&<span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center px-1 animate-pulse">{unreadCount>9?'9+':unreadCount}</span>}
+                  </button>
+                  <button onClick={()=>setView("PROFIL_EDIT")} className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${view==="PROFIL_EDIT"?"bg-blue-500/15 text-blue-400 border border-blue-500/20":"text-slate-400 hover:text-white hover:bg-white/5"}`}>
+                    🏢 Mon Entreprise
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* AUTH & PROFILE BADGES */}
+            <div className="flex items-center gap-3">
+              {authUser&&profile?(
+                <div className="flex items-center gap-2">
+                  <div onClick={()=>setView("PROFIL_EDIT")} className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all cursor-pointer">
+                    <span className={`badge ${profile.role==='CANDIDAT'?'bg-blue-500/20 text-blue-300 border-blue-500/30':'bg-purple-500/20 text-purple-300 border-purple-500/30'} border`}>
+                      {profile.role==='CANDIDAT'?'Candidat Vérifié ✓':'Recruteur Vérifié ✓'}
+                    </span>
+                    <span className="hidden sm:inline text-xs font-bold text-white truncate max-w-[130px]">
+                      {profile.role==='CANDIDAT'?profile.prenom:profile.nom_entreprise}
+                    </span>
+                  </div>
+                  <button onClick={logout} className="p-2 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all" title="Déconnexion">
+                    <IconLogOut/>
+                  </button>
+                </div>
+              ):(
+                <div className="flex items-center gap-2 relative">
+                  <div className="relative">
+                    <button onClick={()=>setUserCardOpen(!userCardOpen)} className="btn-haiti px-5 py-2.5 rounded-xl text-xs flex items-center gap-2">
+                      Connexion <IconChevron/>
+                    </button>
+                    {userCardOpen && (
+                      <div className="absolute right-0 mt-3 w-56 glass-strong rounded-2xl p-2 animate-slide-down z-50 shadow-2xl">
+                        <button onClick={()=>{setUserCardOpen(false);setView("LOGIN");setRegTab("CANDIDAT");}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/20 flex items-center justify-center text-blue-400"><IconUser/></div>
+                          Espace Candidat
+                        </button>
+                        <button onClick={()=>{setUserCardOpen(false);setView("LOGIN");setRegTab("RECRUTEUR");}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all">
+                          <div className="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/20 flex items-center justify-center text-purple-400"><IconBriefcase/></div>
+                          Espace Recruteur
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  <button onClick={()=>setView("REGISTER")} className="btn-white px-4 py-2.5 rounded-xl text-xs hidden sm:block">
+                    S'inscrire
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* HAMBURGER BUTTON - Mobile only */}
+            <button onClick={()=>setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/10 transition-all relative" aria-label="Menu">
+              {mobileMenuOpen ? (
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+              ) : (
+                <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              )}
+              {unreadCount>0&&!mobileMenuOpen&&<span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-red-500 rounded-full text-[9px] font-bold text-white flex items-center justify-center">{unreadCount>9?'9+':unreadCount}</span>}
+            </button>
+          </div>
+        </div>
+
+        {/* ━━━ MOBILE MENU PANEL ━━━ */}
+        {mobileMenuOpen&&(
+          <div className="lg:hidden mt-2 mx-4 glass-strong rounded-2xl p-3 space-y-1 animate-slide-down shadow-2xl">
+            {/* Common links */}
+            <button onClick={()=>{setView('HOME');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='HOME'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>🏠 Accueil</button>
+            <button onClick={()=>{setView('JOBS');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='JOBS'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}><IconBriefcase/> Offres d'emploi</button>
+            {/* Candidat links */}
+            {authUser&&profile?.role==='CANDIDAT'&&(<>
+              <button onClick={()=>{setView('CANDIDAT_DASH');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='CANDIDAT_DASH'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}><IconFile/> Mes Candidatures <span className="ml-auto badge bg-blue-500/20 text-blue-300">{myApps.length}</span></button>
+              <button onClick={()=>{setView('MESSAGES');setMobileMenuOpen(false);}} className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='MESSAGES'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>
+                <IconMessage/> Messagerie
+                {unreadCount>0&&<span className="ml-auto min-w-[20px] h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1">{unreadCount>9?'9+':unreadCount}</span>}
+              </button>
+              <button onClick={()=>{setView('PROFIL_EDIT');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='PROFIL_EDIT'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}><IconUser/> Mon Profil</button>
+              <div className="border-t border-white/10 pt-2 mt-1">
+                <button onClick={()=>{logout();setMobileMenuOpen(false);}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-500/10 transition-all"><IconLogOut/> Déconnexion</button>
+              </div>
+            </>)}
+            {/* Recruteur links */}
+            {authUser&&profile?.role==='RECRUTEUR'&&(<>
+              <button onClick={()=>{setView('POST_JOB');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='POST_JOB'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}><IconPlus/> Publier une offre</button>
+              <button onClick={()=>{setView('RECRUTEUR_DASH');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='RECRUTEUR_DASH'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>👥 Gestion Candidats <span className="ml-auto badge bg-purple-500/20 text-purple-300">{receivedApps.length}</span></button>
+              <button onClick={()=>{setView('CV_BANK');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='CV_BANK'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>🗂️ Banque de CV</button>
+              <button onClick={()=>{setView('MESSAGES');setMobileMenuOpen(false);}} className={`relative w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='MESSAGES'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>
+                <IconMessage/> Messagerie
+                {unreadCount>0&&<span className="ml-auto min-w-[20px] h-5 bg-red-500 text-white text-xs font-bold rounded-full flex items-center justify-center px-1">{unreadCount>9?'9+':unreadCount}</span>}
+              </button>
+              <button onClick={()=>{setView('PROFIL_EDIT');setMobileMenuOpen(false);}} className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${view==='PROFIL_EDIT'?'bg-blue-500/15 text-blue-400':'text-slate-300 hover:text-white hover:bg-white/10'}`}>🏢 Mon Entreprise</button>
+              <div className="border-t border-white/10 pt-2 mt-1">
+                <button onClick={()=>{logout();setMobileMenuOpen(false);}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-400 hover:bg-red-500/10 transition-all"><IconLogOut/> Déconnexion</button>
+              </div>
+            </>)}
+            {/* Not logged in */}
+            {!authUser&&(
+              <div className="space-y-2 pt-1">
+                <button onClick={()=>{setView('LOGIN');setRegTab('CANDIDAT');setMobileMenuOpen(false);}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all"><div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400"><IconUser/></div> Connexion Candidat</button>
+                <button onClick={()=>{setView('LOGIN');setRegTab('RECRUTEUR');setMobileMenuOpen(false);}} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-slate-300 hover:text-white hover:bg-white/10 transition-all"><div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400"><IconBriefcase/></div> Connexion Recruteur</button>
+                <button onClick={()=>{setView('REGISTER');setMobileMenuOpen(false);}} className="btn-haiti w-full py-3 rounded-xl text-sm font-bold">S'inscrire</button>
+              </div>
+            )}
+          </div>
+        )}
+      </nav>
+
+      {/* ━━━ MAIN CONTAINER ━━━ */}
+      <main className="flex-grow max-w-7xl mx-auto px-4 sm:px-6 py-8 w-full">
+
+        {/* ═══════ HOME ═══════ */}
+        {view==="HOME"&&(
+          <div className="space-y-12 animate-fade-in">
+
+            {/* CANDIDATE SMART JOB ALERT BANNER */}
+            {authUser&&profile?.role==="CANDIDAT"&&profile.titre_pro&&matchingJobsCount>0&&(
+              <div className="glass-strong rounded-2xl p-5 border border-blue-500/30 bg-blue-500/10 flex items-center justify-between animate-pop">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">🎯</span>
+                  <div>
+                    <h4 className="text-sm font-bold text-white">Alerte Emploi Intelligente : {matchingJobsCount} offre(s) correspondent à votre profil ({profile.titre_pro}) !</h4>
+                    <p className="text-xs text-blue-300">Consultez et postulez avec votre tarif souhaité dès maintenant.</p>
+                  </div>
+                </div>
+                <button onClick={()=>{setSq(profile.titre_pro);setView("JOBS");}} className="btn-primary px-4 py-2 rounded-xl text-xs font-bold flex-shrink-0">
+                  Voir mes matchs →
+                </button>
+              </div>
+            )}
+
+            {/* HERO */}
+            <section className="relative pt-6 pb-2 text-center space-y-6">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-xs font-semibold text-blue-300">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"/>
+                Plateforme nationale — République d'Haïti
+              </div>
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight max-w-4xl mx-auto">
+                <span className="text-white">Trouvez un emploi ou</span><br/>
+                <span className="gradient-text-haiti">recrutez des talents</span><br/>
+                <span className="text-white">en Haïti</span>
+              </h1>
+              <p className="text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                Centralisation nationale des opportunités d'emploi, vérification CIN/NIF 18+, négociation salariale en direct et messagerie instantanée.
+              </p>
+
+              {/* SEARCH BAR */}
+              <div className="max-w-3xl mx-auto pt-2">
+                <div className="glass-strong rounded-2xl p-2 flex flex-col sm:flex-row items-stretch gap-2 glow-ring">
+                  <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5">
+                    <IconSearch/>
+                    <input type="text" placeholder="Métier, compétence, mot-clé..." value={sq} onChange={e=>setSq(e.target.value)}
+                      className="bg-transparent border-0 text-sm text-white placeholder-slate-500 focus:outline-none w-full"/>
+                  </div>
+                  <div className="flex-1 flex items-center gap-3 px-4 py-3 rounded-xl bg-white/5">
+                    <IconMapPin/>
+                    <select value={sd} onChange={e=>setSd(e.target.value)} className="bg-transparent border-0 text-sm text-slate-300 cursor-pointer focus:outline-none w-full appearance-none">
+                      <option value="" className="bg-slate-900">Département...</option>
+                      {DEPTS.map((d,i)=><option key={i} value={d.split(" ")[0]} className="bg-slate-900">{d}</option>)}
+                    </select>
+                  </div>
+                  <button onClick={()=>setView("JOBS")} className="btn-haiti px-8 py-3 rounded-xl text-sm flex items-center justify-center gap-2 flex-shrink-0">
+                    <IconSearch/> Rechercher
+                  </button>
+                </div>
+              </div>
+
+              {/* STATS */}
+              <div className="flex flex-wrap justify-center gap-8 pt-4">
+                {[
+                  {n:stats.jobs||0,l:"Offres actives",color:"text-blue-400"},
+                  {n:stats.candidats||0,l:"Candidats vérifiés",color:"text-emerald-400"},
+                  {n:stats.recruteurs||0,l:"Entreprises",color:"text-purple-400"}
+                ].map((s,i)=>(
+                  <div key={i} className="text-center">
+                    <div className={`text-3xl font-extrabold ${s.color}`}>{s.n.toLocaleString()}+</div>
+                    <div className="text-[11px] text-slate-500 font-semibold mt-0.5 uppercase">{s.l}</div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* 3 PILLARS */}
+            <section className="grid grid-cols-1 md:grid-cols-3 gap-5">
+              {[
+                {icon:<IconShield/>,title:"Vérification CIN/NIF 18+",desc:"Tous les profils candidats sont certifiés par document d'identité officiel pour un recrutement sécurisé."},
+                {icon:<IconDollar/>,title:"Négociation Salariale Intégrée",desc:"Définissez vos prétentions salariales et négociez en direct avec les recruteurs via accord chiffré."},
+                {icon:<IconMessage/>,title:"Messagerie Realtime",desc:"Discussions directes et instantanées entre candidats et employeurs avec notifications en direct."}
+              ].map((f,i)=>(
+                <div key={i} className="glass-card rounded-2xl p-6 space-y-3">
+                  <div className="w-12 h-12 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center">{f.icon}</div>
+                  <h3 className="text-base font-bold text-white">{f.title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{f.desc}</p>
+                </div>
+              ))}
+            </section>
+
+            {/* RECENT JOBS */}
+            <section className="space-y-5">
+              <div className="flex items-end justify-between">
+                <div>
+                  <span className="badge bg-blue-500/15 text-blue-400 border border-blue-500/20 mb-2">Offres disponibles</span>
+                  <h2 className="text-2xl font-extrabold text-white">Dernières Opportunités d'Emploi</h2>
+                </div>
+                <button onClick={()=>setView("JOBS")} className="btn-ghost px-4 py-2 rounded-xl text-xs flex items-center gap-2">Voir tout <IconArrowRight/></button>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                {jobs.slice(0,4).map(job=>(
+                  <div key={job.id} className="glass-card rounded-2xl p-6 flex flex-col justify-between space-y-4">
+                    <div className="space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <span className="text-xs font-semibold text-slate-400 block">{job.nom_entreprise}</span>
+                          <h3 className="text-base font-bold text-white leading-tight">{job.titre}</h3>
+                        </div>
+                        <span className="badge bg-blue-500/15 text-blue-400 border border-blue-500/20">{job.type_contrat}</span>
+                      </div>
+                      <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{job.description}</p>
+                      <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-white/5">
+                        <span className="flex items-center gap-1.5"><IconMapPin/>{job.departement?.split(" ")[0]} — {job.ville}</span>
+                        <span className="font-bold text-emerald-400">{job.salaire_range} {job.devise}</span>
+                      </div>
+                    </div>
+                    <button onClick={()=>tryApply(job)} className="btn-primary w-full py-3 rounded-xl text-xs font-bold">
+                      Postuler & Négocier le Tarif
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
+        )}
+
+        {/* ═══════ JOBS SEARCH ═══════ */}
+        {view==="JOBS"&&(
+          <div className="space-y-6 animate-fade-in">
+            <div>
+              <h1 className="text-3xl font-extrabold text-white">Recherche d'Emplois en Haïti</h1>
+              <p className="text-xs text-slate-400 mt-1">Explorez les postes et soumettez vos prétentions salariales.</p>
+            </div>
+            <div className="glass-strong p-3 rounded-2xl grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-white/5">
+                <IconSearch/>
+                <input type="text" placeholder="Mot-clé, titre..." value={sq} onChange={e=>setSq(e.target.value)} className="bg-transparent border-0 text-sm text-white placeholder-slate-500 focus:outline-none w-full"/>
+              </div>
+              <select value={sd} onChange={e=>setSd(e.target.value)} className="input-dark text-xs px-4 py-2.5 rounded-xl cursor-pointer">
+                <option value="">Tous les Départements</option>
+                {DEPTS.map((d,i)=><option key={i} value={d.split(" ")[0]}>{d}</option>)}
+              </select>
+              <select value={sc} onChange={e=>setSc(e.target.value)} className="input-dark text-xs px-4 py-2.5 rounded-xl cursor-pointer">
+                <option value="">Tous les Contrats</option>
+                {CONTRACTS.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}
+              </select>
+            </div>
+            <p className="text-xs text-slate-500 font-semibold">{filteredJobs.length} résultat(s)</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {filteredJobs.map(job=>(
+                <div key={job.id} className="glass-card rounded-2xl p-6 flex flex-col justify-between space-y-4">
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <span className="text-xs font-semibold text-slate-400 block">{job.nom_entreprise}</span>
+                        <h3 className="text-base font-bold text-white leading-tight">{job.titre}</h3>
+                      </div>
+                      <span className="badge bg-blue-500/15 text-blue-400 border border-blue-500/20">{job.type_contrat}</span>
+                    </div>
+                    <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">{job.description}</p>
+                    <div className="flex items-center justify-between text-xs text-slate-500 pt-2 border-t border-white/5">
+                      <span className="flex items-center gap-1.5"><IconMapPin/>{job.departement?.split(" ")[0]} — {job.ville}</span>
+                      <span className="font-bold text-emerald-400">{job.salaire_range} {job.devise}</span>
+                    </div>
+                  </div>
+                  <button onClick={()=>tryApply(job)} className="btn-primary w-full py-3 rounded-xl text-xs font-bold">
+                    Postuler & Négocier le Tarif
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ CV BANK (RECRUITER) ═══════ */}
+        {view==="CV_BANK"&&(
+          <div className="space-y-6 animate-fade-in">
+            <div>
+              <span className="badge bg-purple-500/15 text-purple-400 border border-purple-500/20 mb-2">Espace Recruteurs</span>
+              <h1 className="text-3xl font-extrabold text-white">Banque de CV — Candidats Vérifiés</h1>
+              <p className="text-xs text-slate-400 mt-1">Recherchez directement des talents par métier ou compétences.</p>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="flex items-center gap-3 px-4 py-2.5 rounded-xl glass">
+                <IconSearch/>
+                <input type="text" placeholder="Rechercher par métier, compétence, nom..." value={cvQ} onChange={e=>setCvQ(e.target.value)} className="bg-transparent border-0 text-xs text-white placeholder-slate-500 focus:outline-none w-full"/>
+              </div>
+              <select value={cvD} onChange={e=>setCvD(e.target.value)} className="input-dark text-xs px-4 py-2.5 rounded-xl cursor-pointer">
+                <option value="">Tous les Départements</option>
+                {DEPTS.map((d,i)=><option key={i} value={d.split(" ")[0]}>{d}</option>)}
+              </select>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {filteredCandidates.map(c=>(
+                <div key={c.id} className="glass-card rounded-2xl p-6 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 border border-white/5 flex items-center justify-center text-sm font-bold text-blue-400">
+                      {(c.prenom||"?")[0]}{(c.nom||"?")[0]}
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-bold text-white">{c.prenom} {c.nom}</h3>
+                      <p className="text-xs font-semibold text-blue-400">{c.titre_pro}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-xs text-slate-500"><IconMapPin/>{c.departement?.split(" ")[0]} — {c.ville}</div>
+                  {c.competences&&<p className="text-xs text-slate-400 line-clamp-2">{c.competences}</p>}
+                  <div className="flex gap-2 pt-2 border-t border-white/5">
+                    {c.cv_url&&<button onClick={()=>viewFile('cv-files',c.cv_url)} className="btn-ghost px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-1"><IconFile/>Visualiser CV</button>}
+                    {c.whatsapp&&<a href={`https://wa.me/${c.whatsapp.replace(/[^0-9]/g,"")}`} target="_blank" className="btn-ghost px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-1 text-emerald-400"><IconPhone/>WhatsApp</a>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ REALTIME MESSAGING & NEGOTIATION VIEW ═══════ */}
+        {view==="MESSAGES"&&(
+          <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
+            <div>
+              <h1 className="text-3xl font-extrabold text-white">Messagerie & Négociations en Temps Réel</h1>
+              <p className="text-xs text-slate-400 mt-1">Discutez directement et validez vos accords financiers sans intermédiaire.</p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[550px]">
+              {/* CONVERSATION LIST */}
+              <div className="lg:col-span-4 glass-strong rounded-3xl p-4 space-y-3">
+                <h3 className="text-xs font-bold text-slate-400 uppercase px-2">Candidatures & Fils de discussion</h3>
+                <div className="space-y-2 overflow-y-auto max-h-[480px]">
+                  {((profile?.role==="CANDIDAT"?myApps:receivedApps)||[]).length===0?(
+                    <p className="text-xs text-slate-500 p-4 text-center">Aucune discussion active.</p>
+                  ):(
+                    (profile?.role==="CANDIDAT"?myApps:receivedApps).map(app=>(
+                      <div key={app.id} onClick={()=>setActiveChatApp(app)}
+                        className={`p-3.5 rounded-2xl cursor-pointer transition-all ${activeChatApp?.id===app.id?"bg-blue-500/20 border border-blue-500/40":"hover:bg-white/5 border border-transparent"}`}>
+                        <div className="flex items-start justify-between">
+                          <h4 className="font-bold text-white text-xs leading-tight">{app.jobs?.titre}</h4>
+                          <span className={`badge ${app.statut==="ACCEPTEE"?"bg-emerald-500/20 text-emerald-300":app.statut==="REFUSEE"?"bg-red-500/20 text-red-300":"bg-amber-500/20 text-amber-300"} text-[9px] py-0 px-1.5`}>{app.statut}</span>
+                        </div>
+                        <p className="text-[11px] text-blue-400 font-semibold mt-1">
+                          {profile?.role==="CANDIDAT"?app.jobs?.profiles?.nom_entreprise:`${app.profiles?.prenom} ${app.profiles?.nom}`}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* CHAT WINDOW */}
+              <div className="lg:col-span-8 glass-strong rounded-3xl p-6 flex flex-col justify-between space-y-4">
+                {activeChatApp?(
+                  <>
+                    {/* CHAT HEADER */}
+                    <div className="flex items-center justify-between border-b border-white/10 pb-4">
+                      <div>
+                        <h3 className="text-sm font-bold text-white">{activeChatApp.jobs?.titre}</h3>
+                        <p className="text-xs text-blue-400 font-semibold">
+                          Interlocuteur : {profile?.role==="CANDIDAT"?activeChatApp.jobs?.profiles?.nom_entreprise:`${activeChatApp.profiles?.prenom} ${activeChatApp.profiles?.nom}`}
+                        </p>
+                      </div>
+                      <button onClick={()=>setOfferModalOpen(true)} className="btn-primary px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                        <IconDollar/> Faire une Offre Financière
+                      </button>
+                    </div>
+
+                    {/* MESSAGES THREAD */}
+                    <div className="flex-grow overflow-y-auto max-h-[380px] space-y-3 pr-2">
+                      {chatMessages.length===0?(
+                        <p className="text-xs text-slate-500 text-center py-12">Début de la discussion pour cette candidature. Envoyez un message ou proposez un tarif !</p>
+                      ):(
+                        chatMessages.map((m, idx)=>{
+                          const isMe = m.sender_id === profile.id;
+                          return(
+                            <div key={idx} className={`flex flex-col ${isMe?'items-end':'items-start'}`}>
+                              <div className={`p-3.5 rounded-2xl max-w-md text-xs leading-relaxed ${isMe?'bg-blue-600 text-white rounded-br-none':'bg-slate-800/80 text-slate-200 border border-white/10 rounded-bl-none'}`}>
+                                {m.proposition_tarif?(
+                                  <div className="space-y-2">
+                                    <div className="font-bold flex items-center gap-1.5 text-amber-300">
+                                      <span>💼</span> Proposition Financière : {m.proposition_tarif} {m.devise}
+                                    </div>
+                                    <p className="text-[11px] text-slate-300">{m.content}</p>
+                                    <div className="flex items-center gap-2 pt-1 border-t border-white/10">
+                                      <span className="text-[10px] uppercase font-bold text-slate-400">Statut : {m.statut_tarif||'PROPOSE'}</span>
+                                      {!isMe && m.statut_tarif==='PROPOSE' && (
+                                        <div className="flex gap-1.5 ml-auto">
+                                          <button onClick={()=>respondOffer(m.id,'ACCEPTE')} className="px-2.5 py-1 bg-emerald-500 text-white rounded-lg text-[10px] font-bold">Accepter</button>
+                                          <button onClick={()=>respondOffer(m.id,'REFUSE')} className="px-2.5 py-1 bg-red-500 text-white rounded-lg text-[10px] font-bold">Refuser</button>
+                                        </div>
+                                      )}
+                                    </div>
+                                  </div>
+                                ):(
+                                  <p>{m.content}</p>
+                                )}
+                              </div>
+                              <span className="text-[9px] text-slate-500 mt-1 px-1">{new Date(m.created_at).toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})}</span>
+                            </div>
+                          );
+                        })
+                      )}
+                      <div ref={chatBottomRef}/>
+                    </div>
+
+                    {/* INPUT FORM */}
+                    <form onSubmit={sendMessage} className="flex gap-2 pt-2 border-t border-white/10">
+                      <input type="text" value={msgInput} onChange={e=>setMsgInput(e.target.value)} placeholder="Écrivez votre message en direct..." className="input-dark flex-grow px-4 py-3 rounded-xl text-xs"/>
+                      <button type="submit" className="btn-haiti px-5 py-3 rounded-xl text-xs font-bold flex items-center gap-1.5">
+                        <IconSend/> Envoyer
+                      </button>
+                    </form>
+                  </>
+                ):(
+                  <div className="flex items-center justify-center h-full py-20 text-slate-500 text-xs">
+                    Sélectionnez une candidature dans la liste à gauche pour ouvrir le fil de discussion direct.
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ PROFIL EDIT VIEW (CANDIDAT & RECRUTEUR) ═══════ */}
+        {view==="PROFIL_EDIT"&&profile&&(
+          <div className="max-w-2xl mx-auto py-4 animate-fade-in space-y-6">
+            <div>
+              <span className="badge bg-blue-500/15 text-blue-400 border border-blue-500/20 mb-2">Espace Personnel</span>
+              <h1 className="text-3xl font-extrabold text-white">Gérer mon Profil ({profile.role})</h1>
+              <p className="text-xs text-slate-400 mt-1">Mettez à jour vos informations et documents officiels.</p>
+            </div>
+
+            <div className="glass-strong rounded-3xl p-8 space-y-6 shadow-2xl">
+              <form onSubmit={handleUpdateProfile} className="space-y-4 text-xs">
+                {profile.role==="CANDIDAT"?(
+                  <>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label className="block font-semibold text-slate-400 mb-1">Nom</label><input disabled value={profile.nom||""} className="input-dark opacity-60 w-full p-2.5 rounded-xl text-xs"/></div>
+                      <div><label className="block font-semibold text-slate-400 mb-1">Prénom</label><input disabled value={profile.prenom||""} className="input-dark opacity-60 w-full p-2.5 rounded-xl text-xs"/></div>
+                    </div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Titre Professionnel / Métier</label><input name="titre" defaultValue={profile.titre_pro||""} required placeholder="ex: Infirmière, Électricien, Développeur..." className="input-dark w-full p-3 rounded-xl text-sm font-bold text-blue-400"/></div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Compétences clés (séparées par virgules)</label><input name="comp" defaultValue={profile.competences||""} placeholder="ex: Soins d'urgence, Pédiatrie, React, Excel..." className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Bio / Présentation</label><textarea name="bio" rows="3" defaultValue={profile.bio||""} placeholder="Présentez votre parcours..." className="input-dark w-full p-2.5 rounded-xl text-xs resize-none"/></div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label className="block font-semibold text-slate-300 mb-1">Téléphone (+509)</label><input name="tel" defaultValue={profile.telephone||""} required className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                      <div><label className="block font-semibold text-slate-300 mb-1">WhatsApp (+509)</label><input name="wa" defaultValue={profile.whatsapp||""} className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label className="block font-semibold text-slate-300 mb-1">Département</label><select name="dept" defaultValue={profile.departement||DEPTS[0]} className="input-dark w-full p-2.5 rounded-xl text-xs">{DEPTS.map((d,i)=><option key={i} value={d}>{d}</option>)}</select></div>
+                      <div><label className="block font-semibold text-slate-300 mb-1">Ville / Commune</label><input name="ville" defaultValue={profile.ville||""} required className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                    </div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">N° CIN / NIF</label><input name="cinNif" defaultValue={profile.cin_nif||""} required className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                    
+                    {/* CV UPDATE MODULE */}
+                    <div className="p-4 rounded-xl glass space-y-2 border-dashed border border-white/10">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-slate-200">📄 Module de Téléversement de CV (PDF/DOCX)</span>
+                        {profile.cv_url&&<button type="button" onClick={()=>viewFile('cv-files',profile.cv_url)} className="text-blue-400 text-xs font-semibold hover:underline">Voir le CV actuel</button>}
+                      </div>
+                      <input name="newCv" type="file" accept=".pdf,.doc,.docx" className="w-full text-xs text-slate-400"/>
+                    </div>
+                  </>
+                ):(
+                  <>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Nom de l'Entreprise</label><input name="nomE" defaultValue={profile.nom_entreprise||""} required className="input-dark w-full p-3 rounded-xl text-sm font-bold text-purple-400"/></div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div><label className="block font-semibold text-slate-300 mb-1">Téléphone (+509)</label><input name="tel" defaultValue={profile.telephone||""} required className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                      <div><label className="block font-semibold text-slate-300 mb-1">N° NIF / Patente / STAT</label><input name="nif" defaultValue={profile.nif_patente||""} required className="input-dark w-full p-2.5 rounded-xl text-xs"/></div>
+                    </div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Département</label><select name="dept" defaultValue={profile.departement||DEPTS[0]} className="input-dark w-full p-2.5 rounded-xl text-xs">{DEPTS.map((d,i)=><option key={i} value={d}>{d}</option>)}</select></div>
+                    <div><label className="block font-semibold text-slate-300 mb-1">Description / Secteur d'activité</label><textarea name="desc" rows="4" defaultValue={profile.description||""} className="input-dark w-full p-2.5 rounded-xl text-xs resize-none"/></div>
+                  </>
+                )}
+
+                <button type="submit" disabled={loading} className="btn-haiti w-full py-3.5 rounded-xl text-sm font-bold disabled:opacity-50">
+                  {loading?<><span className="spinner mr-2"/>Enregistrement...</>:"Enregistrer les Modifications"}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ CANDIDAT DASHBOARD ═══════ */}
+        {view==="CANDIDAT_DASH"&&(
+          <div className="max-w-5xl mx-auto space-y-6 animate-fade-in">
+            <div className="glass-strong rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="badge bg-blue-500/20 text-blue-300 border border-blue-500/30 mb-1">Espace Candidat</span>
+                <h1 className="text-2xl font-black text-white">{profile?.prenom} {profile?.nom}</h1>
+                <p className="text-xs text-blue-400 font-semibold">{profile?.titre_pro}</p>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={()=>setView("MESSAGES")} className="btn-ghost px-4 py-2.5 rounded-xl text-xs flex items-center gap-2"><IconMessage/>Messagerie</button>
+                <button onClick={()=>setView("PROFIL_EDIT")} className="btn-primary px-4 py-2.5 rounded-xl text-xs flex items-center gap-2"><IconEdit/>Modifier Profil</button>
+              </div>
+            </div>
+
+            <div className="glass rounded-3xl p-6 space-y-4">
+              <h2 className="text-base font-bold text-white">Suivi de mes Candidatures ({myApps.length})</h2>
+              {myApps.length===0?(
+                <p className="text-xs text-slate-500 py-6 text-center">Vous n'avez pas encore postulé à une offre. Consultez les offres d'emploi !</p>
+              ):(
+                <div className="space-y-3">
+                  {myApps.map(a=>(
+                    <div key={a.id} className="glass-card rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <h4 className="font-bold text-white text-sm">{a.jobs?.titre}</h4>
+                        <p className="text-xs text-blue-400 font-semibold">{a.jobs?.profiles?.nom_entreprise}</p>
+                        <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">{a.motivation}</p>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className={`badge ${a.statut==="ACCEPTEE"?"bg-emerald-500/20 text-emerald-300 border-emerald-500/30":a.statut==="REFUSEE"?"bg-red-500/20 text-red-300 border-red-500/30":"bg-amber-500/20 text-amber-300 border-amber-500/30"} border`}>
+                          {a.statut==="EN_ATTENTE"?"En attente":a.statut==="ACCEPTEE"?"Accepté":a.statut}
+                        </span>
+                        <button onClick={()=>{setActiveChatApp(a);setView("MESSAGES");}} className="btn-ghost px-3 py-1.5 rounded-xl text-xs flex items-center gap-1">
+                          <IconMessage/> Discuter
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ RECRUTEUR DASHBOARD ═══════ */}
+        {view==="RECRUTEUR_DASH"&&(
+          <div className="max-w-6xl mx-auto space-y-6 animate-fade-in">
+            <div className="glass-strong rounded-3xl p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div>
+                <span className="badge bg-purple-500/20 text-purple-300 border border-purple-500/30 mb-1">Espace Recruteur</span>
+                <h1 className="text-2xl font-black text-white">{profile?.nom_entreprise}</h1>
+                <p className="text-xs text-slate-400 mt-0.5">{profile?.description}</p>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={()=>setView("POST_JOB")} className="btn-haiti px-4 py-2.5 rounded-xl text-xs flex items-center gap-2"><IconPlus/>Publier une Offre</button>
+                <button onClick={()=>setView("MESSAGES")} className="btn-ghost px-4 py-2.5 rounded-xl text-xs flex items-center gap-2"><IconMessage/>Messagerie</button>
+              </div>
+            </div>
+
+            {/* MY JOBS LIST WITH TOGGLE STATUS */}
+            <div className="glass rounded-3xl p-6 space-y-4">
+              <h2 className="text-base font-bold text-white">Mes Offres Publiées ({myJobsList.length})</h2>
+              {myJobsList.length===0?(
+                <p className="text-xs text-slate-500 py-4">Aucune offre publiée pour le moment.</p>
+              ):(
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {myJobsList.map(j=>(
+                    <div key={j.id} className="glass-card rounded-2xl p-4 flex items-center justify-between">
+                      <div>
+                        <h4 className="font-bold text-white text-xs">{j.titre}</h4>
+                        <p className="text-[10px] text-slate-400">{j.type_contrat} • {j.salaire_range} {j.devise}</p>
+                      </div>
+                      <button onClick={()=>toggleJobStatus(j.id, j.statut)} className={`badge cursor-pointer ${j.statut==='ACTIF'?'bg-emerald-500/20 text-emerald-300 border-emerald-500/30':'bg-slate-700 text-slate-300 border-slate-600'} border`}>
+                        {j.statut==='ACTIF'?'● Actif':'○ Fermé'}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* RECEIVED APPLICATIONS */}
+            <div className="glass rounded-3xl p-6 space-y-4">
+              <h2 className="text-base font-bold text-white">Gestion des Candidats & Prétentions Salariales ({receivedApps.length})</h2>
+              {receivedApps.length===0?(
+                <p className="text-xs text-slate-500 py-6 text-center">Aucune candidature reçue pour le moment.</p>
+              ):(
+                <div className="space-y-4">
+                  {receivedApps.map(a=>(
+                    <div key={a.id} className="glass-card rounded-2xl p-5 space-y-3">
+                      <div className="flex items-start justify-between">
+                        <div>
+                          <h4 className="font-bold text-white text-sm">{a.profiles?.prenom} {a.profiles?.nom}</h4>
+                          <p className="text-xs text-blue-400 font-semibold">{a.profiles?.titre_pro} • Pour : {a.jobs?.titre}</p>
+                          <div className="mt-2 p-2.5 rounded-xl bg-slate-900/60 border border-white/5 text-xs text-slate-300">
+                            {a.motivation}
+                          </div>
+                        </div>
+                        <span className={`badge ${a.statut==="ACCEPTEE"?"bg-emerald-500/20 text-emerald-300 border-emerald-500/30":a.statut==="REFUSEE"?"bg-red-500/20 text-red-300 border-red-500/30":"bg-amber-500/20 text-amber-300 border-amber-500/30"} border`}>
+                          {a.statut}
+                        </span>
+                      </div>
+
+                      <div className="flex flex-wrap gap-2 pt-2 border-t border-white/5 items-center justify-between">
+                        <div className="flex gap-2">
+                          {a.profiles?.cv_url&&<button onClick={()=>viewFile('cv-files',a.profiles.cv_url)} className="btn-ghost px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-1"><IconFile/>Visualiser CV</button>}
+                          {a.profiles?.whatsapp&&<a href={`https://wa.me/${a.profiles.whatsapp.replace(/[^0-9]/g,"")}`} target="_blank" className="btn-ghost px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-1 text-emerald-400"><IconPhone/>WhatsApp</a>}
+                          <button onClick={()=>{setActiveChatApp(a);setView("MESSAGES");}} className="btn-primary px-3 py-1.5 rounded-lg text-[11px] flex items-center gap-1"><IconMessage/>Négocier en direct</button>
+                        </div>
+                        {a.statut==="EN_ATTENTE"&&(
+                          <div className="flex gap-1.5">
+                            <button onClick={()=>setAppStatus(a.id,"ACCEPTEE")} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-500 text-white hover:bg-emerald-600 transition">Accepter</button>
+                            <button onClick={()=>setAppStatus(a.id,"REFUSEE")} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-red-500 text-white hover:bg-red-600 transition">Refuser</button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ POST JOB VIEW ═══════ */}
+        {view==="POST_JOB"&&profile?.role==="RECRUTEUR"&&(
+          <div className="max-w-xl mx-auto py-4 animate-fade-in">
+            <button onClick={()=>setView("RECRUTEUR_DASH")} className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-white transition-colors mb-4"><IconBack/>Tableau de bord</button>
+            <div className="glass-strong rounded-3xl p-8 space-y-6 shadow-2xl">
+              <div>
+                <h2 className="text-2xl font-extrabold text-white">Publier une Offre d'Emploi</h2>
+                <p className="text-xs text-slate-400 mt-1">Renseignez les compétences et le budget proposé pour attirer des candidats.</p>
+              </div>
+              <form onSubmit={handlePostJob} className="space-y-4 text-xs">
+                <div><label className="block font-semibold text-slate-300 mb-1">Titre du Poste</label><input name="titre" required placeholder="ex: Infirmière Polyvalente, Développeur Python..." className="input-dark w-full p-3 rounded-xl text-sm"/></div>
+                <div><label className="block font-semibold text-slate-300 mb-1">Description & Missions</label><textarea name="desc" rows="4" required placeholder="Détaillez les tâches et les qualifications requises..." className="input-dark w-full p-3 rounded-xl text-xs resize-none"/></div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><label className="block font-semibold text-slate-300 mb-1">Type de Contrat</label><select name="contrat" className="input-dark w-full p-2.5 rounded-xl">{CONTRACTS.map(c=><option key={c.id} value={c.id}>{c.label}</option>)}</select></div>
+                  <div><label className="block font-semibold text-slate-300 mb-1">Présence</label><select name="presence" className="input-dark w-full p-2.5 rounded-xl">{PRESENCE.map(p=><option key={p.id} value={p.id}>{p.label}</option>)}</select></div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><label className="block font-semibold text-slate-300 mb-1">Budget Proposé / Salaire Indicatif</label><input name="salaire" required placeholder="100,000 - 200,000" className="input-dark w-full p-2.5 rounded-xl font-bold text-emerald-400"/></div>
+                  <div><label className="block font-semibold text-slate-300 mb-1">Devise</label><select name="devise" className="input-dark w-full p-2.5 rounded-xl font-bold"><option value="HTG">HTG</option><option value="USD">USD</option></select></div>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div><label className="block font-semibold text-slate-300 mb-1">Département</label><select name="dept" className="input-dark w-full p-2.5 rounded-xl">{DEPTS.map((d,i)=><option key={i} value={d}>{d}</option>)}</select></div>
+                  <div><label className="block font-semibold text-slate-300 mb-1">Ville</label><input name="ville" required placeholder="Pétion-Ville" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                </div>
+                <button type="submit" disabled={loading} className="btn-haiti w-full py-3.5 rounded-xl font-bold text-sm disabled:opacity-50">
+                  {loading?<><span className="spinner mr-2"/>Publication...</>:"Publier l'Offre"}
+                </button>
+              </form>
+            </div>
+          </div>
+        )}
+
+        {/* ═══════ LOGIN & REGISTER VIEWS ═══════ */}
+        {view==="LOGIN"&&(
+          <div className="max-w-md mx-auto py-10 animate-fade-in">
+            <button onClick={()=>setView("HOME")} className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-white transition-colors mb-6"><IconBack/>Accueil</button>
+            <div className="glass-strong rounded-3xl p-8 space-y-6 shadow-2xl">
+              <div className="text-center space-y-2">
+                <h2 className="text-2xl font-extrabold text-white">Connexion Job Peyi</h2>
+                <p className="text-xs text-slate-400">Accédez à votre espace Candidat ou Recruteur.</p>
+              </div>
+              <form onSubmit={handleLogin} className="space-y-4 text-xs">
+                <div><label className="block font-semibold text-slate-400 mb-1">Email</label><input name="email" type="email" required placeholder="votre@email.ht" className="input-dark w-full text-sm px-4 py-3 rounded-xl"/></div>
+                <div><label className="block font-semibold text-slate-400 mb-1">Mot de Passe</label><input name="pwd" type="password" required placeholder="••••••" className="input-dark w-full text-sm px-4 py-3 rounded-xl"/></div>
+                <button type="submit" disabled={loading} className="btn-haiti w-full py-3.5 rounded-xl text-sm font-bold disabled:opacity-50">
+                  {loading?<><span className="spinner mr-2"/>Connexion...</>:"Se Connecter"}
+                </button>
+              </form>
+              <p className="text-center text-xs text-slate-500">Pas encore de compte ? <button onClick={()=>setView("REGISTER")} className="text-blue-400 font-semibold hover:underline">S'inscrire</button></p>
+            </div>
+          </div>
+        )}
+
+        {view==="REGISTER"&&(
+          <div className="max-w-2xl mx-auto py-6 animate-fade-in">
+            <button onClick={()=>setView("HOME")} className="flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-white transition-colors mb-6"><IconBack/>Accueil</button>
+            <div className="glass-strong rounded-3xl p-8 space-y-6 shadow-2xl">
+              <div className="text-center space-y-1">
+                <h2 className="text-2xl font-extrabold text-white">Créer un Compte Job Peyi</h2>
+                <p className="text-xs text-slate-400">Rejoignez la première plateforme d'emploi en Haïti</p>
+              </div>
+              <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-white/5 border border-white/5">
+                <button onClick={()=>setRegTab("CANDIDAT")} className={`py-2.5 rounded-lg text-xs font-bold transition-all ${regTab==="CANDIDAT"?"btn-primary shadow":"text-slate-400 hover:text-white"}`}>Je suis Candidat</button>
+                <button onClick={()=>setRegTab("RECRUTEUR")} className={`py-2.5 rounded-lg text-xs font-bold transition-all ${regTab==="RECRUTEUR"?"btn-primary shadow":"text-slate-400 hover:text-white"}`}>Je suis Recruteur</button>
+              </div>
+              {regTab==="CANDIDAT"?(
+                <form onSubmit={handleRegisterCandidat} className="space-y-4 text-xs">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Nom</label><input name="nom" required placeholder="JEAN-BAPTISTE" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">Prénom</label><input name="prenom" required placeholder="Samuel" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Email</label><input name="email" type="email" required placeholder="email@domaine.ht" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">Mot de Passe</label><input name="pwd" type="password" required minLength="6" placeholder="••••••" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Téléphone (+509)</label><input name="tel" required placeholder="+509 XXXX-XXXX" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">WhatsApp</label><input name="wa" placeholder="+509 XXXX-XXXX" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Département</label><select name="dept" className="input-dark w-full p-2.5 rounded-xl">{DEPTS.map((d,i)=><option key={i} value={d}>{d}</option>)}</select></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">Ville / Commune</label><input name="ville" required placeholder="Delmas, Pétion-Ville..." className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">Titre Professionnel / Métier</label><input name="titre" required placeholder="Infirmière, Développeur, Comptable..." className="input-dark w-full p-2.5 rounded-xl text-sm font-bold text-blue-400"/></div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">Compétences (virgules)</label><input name="comp" placeholder="React, Excel, Soins d'urgence..." className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">N° CIN / NIF</label><input name="cinNif" required placeholder="004-XXX-XXX-X" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">Bio courte</label><textarea name="bio" rows="2" placeholder="Parlez de votre expérience..." className="input-dark w-full p-2.5 rounded-xl resize-none"/></div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <label className="glass rounded-xl p-3.5 cursor-pointer hover:bg-white/5 border-dashed border border-white/10">
+                      <div className="font-bold text-slate-300 mb-1 flex items-center gap-1.5"><IconFile/> CV (PDF/DOCX)</div>
+                      <input name="cvFile" type="file" accept=".pdf,.doc,.docx" className="w-full text-[10px] text-slate-400"/>
+                    </label>
+                    <label className="glass rounded-xl p-3.5 cursor-pointer hover:bg-white/5 border-dashed border border-white/10">
+                      <div className="font-bold text-slate-300 mb-1 flex items-center gap-1.5"><IconShield/> CIN/NIF 18+</div>
+                      <input name="cinFile" type="file" accept=".pdf,.png,.jpg,.jpeg" className="w-full text-[10px] text-slate-400"/>
+                    </label>
+                  </div>
+                  <label className="glass rounded-xl p-3 flex items-start gap-3 cursor-pointer border border-blue-500/20 bg-blue-500/5">
+                    <input name="age18" type="checkbox" required className="mt-0.5 w-4 h-4 rounded accent-blue-500"/>
+                    <span className="text-[11px] text-slate-300 leading-relaxed">J'atteste avoir <strong className="text-white">au moins 18 ans révolus</strong> et détenir la capacité légale pour travailler et soumettre mes documents officiels.</span>
+                  </label>
+                  <button type="submit" disabled={loading} className="btn-haiti w-full py-3.5 rounded-xl text-sm font-bold disabled:opacity-50">
+                    {loading?<><span className="spinner mr-2"/>Inscription...</>:"Créer mon Compte Candidat"}
+                  </button>
+                </form>
+              ):(
+                <form onSubmit={handleRegisterRecruteur} className="space-y-4 text-xs">
+                  <div><label className="block font-semibold text-slate-400 mb-1">Nom de l'Entreprise</label><input name="nomE" required placeholder="ex: MonEntreprise Haiti" className="input-dark w-full p-2.5 rounded-xl text-sm font-bold text-purple-400"/></div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Email Pro</label><input name="email" type="email" required placeholder="rh@entreprise.ht" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">Mot de Passe</label><input name="pwd" type="password" required minLength="6" placeholder="••••••" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div><label className="block font-semibold text-slate-400 mb-1">Téléphone (+509)</label><input name="tel" required placeholder="+509 XXXX-XXXX" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                    <div><label className="block font-semibold text-slate-400 mb-1">N° NIF / Patente / STAT</label><input name="nif" required placeholder="Numéro officiel" className="input-dark w-full p-2.5 rounded-xl"/></div>
+                  </div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">Département</label><select name="dept" className="input-dark w-full p-2.5 rounded-xl">{DEPTS.map((d,i)=><option key={i} value={d}>{d}</option>)}</select></div>
+                  <div><label className="block font-semibold text-slate-400 mb-1">Description / Secteur</label><textarea name="desc" rows="3" placeholder="Décrivez votre activité..." className="input-dark w-full p-2.5 rounded-xl resize-none"/></div>
+                  <button type="submit" disabled={loading} className="btn-haiti w-full py-3.5 rounded-xl text-sm font-bold disabled:opacity-50">
+                    {loading?<><span className="spinner mr-2"/>Inscription...</>:"Créer mon Compte Recruteur"}
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
+        )}
+
+      </main>
+
+      {/* FOOTER */}
+      <footer className="border-t border-white/5 mt-16">
+        <div className="max-w-7xl mx-auto px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+          <div className="flex items-center gap-3">
+            <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center text-[10px] font-bold text-white shadow">JP</div>
+            <span className="font-semibold">© 2026 Job Peyi — République d'Haïti</span>
+          </div>
+          <div>Plateforme nationale d'emploi, négociation salariale & recrutement certifié</div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script>
+
+<script>
+(function(){
+  const c=document.getElementById('constellation');
+  if(!c)return;
+  const ctx=c.getContext('2d');
+  let W,H,particles=[];
+  const resize=()=>{W=c.width=innerWidth;H=c.height=innerHeight};
+  addEventListener('resize',resize);resize();
+
+  const colors=['59,130,246','59,130,246','239,68,68','139,92,246'];
+
+  for(let i=0;i<75;i++){
+    const col=colors[Math.floor(Math.random()*colors.length)];
+    particles.push({
+      x:Math.random()*W,y:Math.random()*H,
+      vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,
+      r:Math.random()*1.8+.5,col,
+      pulse:Math.random()*Math.PI*2,pulseSpeed:.01+Math.random()*.02
+    });
+  }
+
+  let mouse={x:-1000,y:-1000};
+  document.addEventListener('mousemove',e=>{mouse.x=e.clientX;mouse.y=e.clientY});
+
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    for(let i=0;i<particles.length;i++){
+      const p=particles[i];
+      p.x+=p.vx;p.y+=p.vy;
+      p.pulse+=p.pulseSpeed;
+      if(p.x<0||p.x>W)p.vx*=-1;
+      if(p.y<0||p.y>H)p.vy*=-1;
+
+      const mdx=p.x-mouse.x,mdy=p.y-mouse.y;
+      const mdist=Math.sqrt(mdx*mdx+mdy*mdy);
+      if(mdist<140){
+        p.x+=mdx/mdist*.7;
+        p.y+=mdy/mdist*.7;
+      }
+
+      const alpha=.3+Math.sin(p.pulse)*.2;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.col},${alpha})`;
+      ctx.fill();
+
+      for(let j=i+1;j<particles.length;j++){
+        const p2=particles[j];
+        const dx=p.x-p2.x,dy=p.y-p2.y;
+        const dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<115){
+          ctx.beginPath();
+          ctx.moveTo(p.x,p.y);
+          ctx.lineTo(p2.x,p2.y);
+          const lineAlpha=(1-dist/115)*.12;
+          ctx.strokeStyle=`rgba(${p.col},${lineAlpha})`;
+          ctx.lineWidth=.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+</script>
+
+</body>
+</html>

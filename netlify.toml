@@ -1,0 +1,3 @@
+# Configuration Netlify pour servir index.html directement
+[build]
+  publish = "."
