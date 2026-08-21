@@ -131,6 +131,7 @@ function App(){
   const[loading,setLoading]=useState(false);
   const[userCardOpen,setUserCardOpen]=useState(false);
   const[mobileMenuOpen,setMobileMenuOpen]=useState(false);
+  const[acceptModalApp,setAcceptModalApp]=useState(null);
 
   /* MESSAGERIE & REALTIME STATE */
   const[activeChatApp,setActiveChatApp]=useState(null);
@@ -660,24 +661,24 @@ function App(){
   };
 
   const handleDeleteJob=async(jobId)=>{
-    if(!window.confirm("Voulez-vous vraiment supprimer cette offre d'emploi ?")){
+    if(!window.confirm("Voulez-vous vraiment supprimer définitivement cette offre d'emploi ?")){
       return;
     }
     try{
-      const { data: userData } = await sb.auth.getUser();
-      const currentUserId = userData?.user?.id || authUser?.id || profile?.id || profile?.user_id;
-      
       const { error } = await sb
         .from('jobs')
         .delete()
-        .eq('id', jobId)
-        .eq('recruteur_id', currentUserId);
+        .eq('id', jobId);
 
-      if(error) throw error;
+      if(error){
+        toast("Erreur lors de la suppression: " + error.message, "error");
+        return;
+      }
 
+      // Remove from state only after successful Supabase deletion
       setJobs(prev => prev.filter(j => j.id !== jobId));
       sessionStorage.removeItem('jobs_cache');
-      toast("🗑️ Offre supprimée avec succès !");
+      toast("🗑️ Offre supprimée définitivement !");
       loadStats();
       loadReceivedApps();
     }catch(err){
@@ -750,6 +751,60 @@ function App(){
       loadMyApps();
     }catch(err){
       toast("Erreur: "+err.message,"error");
+      setLoading(false);
+    }
+  };
+
+  const handleConfirmAcceptCandidate=async(e)=>{
+    e.preventDefault();
+    if(!acceptModalApp) return;
+    const f = e.target;
+    const rdvDate = f.rdvDate.value;
+    const rdvLocation = f.rdvLocation.value.trim();
+    const rdvNotes = f.rdvNotes.value.trim();
+    setLoading(true);
+
+    try{
+      const { data: userData } = await sb.auth.getUser();
+      const currentUserId = userData?.user?.id || authUser?.id || profile?.id || profile?.user_id;
+
+      const { error } = await sb
+        .from('applications')
+        .update({
+          statut: 'ACCEPTEE',
+          rendezvous_date: rdvDate,
+          rendezvous_location: rdvLocation,
+          rendezvous_notes: rdvNotes
+        })
+        .eq('id', acceptModalApp.id);
+
+      if(error) throw error;
+
+      // Automatically send confirmation message into discussion thread
+      try{
+        const formattedDate = new Date(rdvDate).toLocaleString('fr-FR', { dateStyle: 'full', timeStyle: 'short' });
+        await sb.from('messages').insert({
+          application_id: acceptModalApp.id,
+          sender_id: currentUserId,
+          recipient_id: acceptModalApp.candidat_id || acceptModalApp.profiles?.id,
+          content: `🎉 Félicitations ! Votre candidature a été ACCEPTÉE.\n\n📅 Date & Heure du RDV : ${formattedDate}\n📍 Lieu : ${rdvLocation}\n📝 Notes : ${rdvNotes || 'Aucune consigne particulière.'}`,
+          is_read: false
+        });
+      }catch(mErr){ console.warn("Msg thread update:", mErr); }
+
+      setReceivedApps(p => p.map(a => a.id === acceptModalApp.id ? {
+        ...a,
+        statut: 'ACCEPTEE',
+        rendezvous_date: rdvDate,
+        rendezvous_location: rdvLocation,
+        rendezvous_notes: rdvNotes
+      } : a));
+
+      setAcceptModalApp(null);
+      toast("🎉 Candidature acceptée ! Le rendez-vous a été transmis au candidat.");
+    }catch(err){
+      toast("Erreur: " + err.message, "error");
+    }finally{
       setLoading(false);
     }
   };
@@ -893,6 +948,47 @@ function App(){
                 <button onClick={sendOfferProposal} className="btn-haiti flex-1 py-2.5 rounded-xl text-xs font-bold">Envoyer l'Offre</button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ━━━ ACCEPT CANDIDATE RENDEZ-VOUS MODAL ━━━ */}
+      {acceptModalApp&&(
+        <div className="fixed inset-0 z-[95] flex items-center justify-center p-4" onClick={()=>setAcceptModalApp(null)}>
+          <div className="absolute inset-0 bg-black/75 backdrop-blur-md"/>
+          <div className="glass-strong rounded-3xl p-6 sm:p-8 max-w-lg w-full space-y-5 animate-pop relative shadow-2xl" onClick={e=>e.stopPropagation()}>
+            <div className="flex items-start justify-between border-b border-white/10 pb-4">
+              <div>
+                <span className="badge bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 mb-1">Acceptation & Rendez-vous</span>
+                <h3 className="text-xl font-bold text-white">Accepter {acceptModalApp.profiles?.prenom || 'le'} {acceptModalApp.profiles?.nom || 'candidat'}</h3>
+                <p className="text-xs text-slate-400 mt-0.5">Poste : <strong className="text-blue-400">{acceptModalApp.jobs?.titre}</strong></p>
+              </div>
+              <button onClick={()=>setAcceptModalApp(null)} className="w-8 h-8 rounded-full bg-white/10 text-slate-400 hover:text-white flex items-center justify-center">✕</button>
+            </div>
+
+            <form onSubmit={handleConfirmAcceptCandidate} className="space-y-4 text-xs">
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">1. Date & Heure de rencontre / prise de poste *</label>
+                <input name="rdvDate" type="datetime-local" required className="input-dark w-full p-3 rounded-xl text-sm font-semibold text-white cursor-pointer"/>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">2. Lieu du rendez-vous / de travail *</label>
+                <input name="rdvLocation" type="text" required placeholder="ex: Bureaux de l'entreprise, Delmas 32 OU En ligne via Google Meet" className="input-dark w-full p-3 rounded-xl text-xs text-white"/>
+              </div>
+
+              <div>
+                <label className="block font-semibold text-slate-300 mb-1">3. Message / Instructions pour le candidat (Optionnel)</label>
+                <textarea name="rdvNotes" rows="3" placeholder="Documents à apporter (pièces d'identité, diplômes), personne à demander à l'accueil..." className="input-dark w-full p-3 rounded-xl text-xs text-white resize-none"/>
+              </div>
+
+              <div className="flex gap-3 pt-2">
+                <button type="button" onClick={()=>setAcceptModalApp(null)} className="btn-ghost flex-1 py-3 rounded-xl text-xs font-bold">Annuler</button>
+                <button type="submit" disabled={loading} className="btn-haiti flex-1 py-3 rounded-xl text-xs font-bold bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-500 hover:to-emerald-600 disabled:opacity-50">
+                  {loading?<><span className="spinner mr-2"/>Validation...</>:"Confirmer & Transmettre le RDV"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}
@@ -1498,20 +1594,58 @@ function App(){
               ):(
                 <div className="space-y-3">
                   {myApps.map(a=>(
-                    <div key={a.id} className="glass-card rounded-2xl p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                      <div>
-                        <h4 className="font-bold text-white text-sm">{a.jobs?.titre}</h4>
-                        <p className="text-xs text-blue-400 font-semibold">{a.jobs?.profiles?.nom_entreprise}</p>
-                        <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">{a.motivation}</p>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className={`badge ${a.statut==="ACCEPTEE"?"bg-emerald-500/20 text-emerald-300 border-emerald-500/30":a.statut==="REFUSEE"?"bg-red-500/20 text-red-300 border-red-500/30":"bg-amber-500/20 text-amber-300 border-amber-500/30"} border`}>
-                          {a.statut==="EN_ATTENTE"?"En attente":a.statut==="ACCEPTEE"?"Accepté":a.statut}
-                        </span>
-                        <button onClick={()=>{setActiveChatApp(a);setView("MESSAGES");}} className="btn-ghost px-3 py-1.5 rounded-xl text-xs flex items-center gap-1">
-                          <IconMessage/> Discuter
+                    <div key={a.id} className={`glass-card rounded-2xl p-5 space-y-4 ${a.statut==='ACCEPTEE'?'border-emerald-500/30 bg-emerald-500/5':''}`}>
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <h4 className="font-bold text-white text-base">{a.jobs?.titre}</h4>
+                            <span className={`badge ${a.statut==="ACCEPTEE"?"bg-emerald-500/20 text-emerald-300 border-emerald-500/30":a.statut==="REFUSEE"?"bg-red-500/20 text-red-300 border-red-500/30":"bg-amber-500/20 text-amber-300 border-amber-500/30"} border`}>
+                              {a.statut==="EN_ATTENTE"?"En attente":a.statut==="ACCEPTEE"?"Accepté ✓":a.statut==="REFUSEE"?"Refusé ✕":a.statut}
+                            </span>
+                          </div>
+                          <p className="text-xs text-blue-400 font-semibold mt-0.5">{a.jobs?.profiles?.nom_entreprise || 'Entreprise Partenaire'}</p>
+                          <p className="text-[11px] text-slate-400 mt-1 line-clamp-1">{a.motivation}</p>
+                        </div>
+                        <button onClick={()=>{setActiveChatApp(a);setView("MESSAGES");}} className="btn-ghost px-3.5 py-2 rounded-xl text-xs flex items-center gap-1.5 flex-shrink-0">
+                          <IconMessage/> Discuter avec le recruteur
                         </button>
                       </div>
+
+                      {/* ACCEPTED RENDEZ-VOUS DETAILS BOX */}
+                      {a.statut==="ACCEPTEE"&&(
+                        <div className="p-4 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 space-y-2.5 animate-fade-in text-xs">
+                          <div className="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+                            <span>🎉</span>
+                            <span>Félicitations ! Votre candidature a été acceptée.</span>
+                          </div>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-slate-300 pt-1">
+                            {a.rendezvous_date && (
+                              <div className="flex items-center gap-2 bg-black/20 p-2.5 rounded-xl">
+                                <span className="text-emerald-400 text-sm">📅</span>
+                                <div>
+                                  <strong className="text-white block text-[11px]">Date & Heure du RDV :</strong>
+                                  <span className="text-emerald-300 font-semibold">{new Date(a.rendezvous_date).toLocaleString('fr-FR', {dateStyle:'full', timeStyle:'short'})}</span>
+                                </div>
+                              </div>
+                            )}
+                            {a.rendezvous_location && (
+                              <div className="flex items-center gap-2 bg-black/20 p-2.5 rounded-xl">
+                                <span className="text-emerald-400 text-sm">📍</span>
+                                <div>
+                                  <strong className="text-white block text-[11px]">Lieu de rencontre / travail :</strong>
+                                  <span className="text-white font-semibold">{a.rendezvous_location}</span>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                          {a.rendezvous_notes && (
+                            <div className="bg-black/20 p-2.5 rounded-xl text-slate-300">
+                              <strong className="text-white block text-[11px] mb-0.5">📝 Instructions du recruteur :</strong>
+                              <p className="text-xs text-slate-300 whitespace-pre-wrap">{a.rendezvous_notes}</p>
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
@@ -1592,7 +1726,7 @@ function App(){
                         </div>
                         {a.statut==="EN_ATTENTE"&&(
                           <div className="flex gap-1.5">
-                            <button onClick={()=>setAppStatus(a.id,"ACCEPTEE")} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-emerald-500 text-white hover:bg-emerald-600 transition">Accepter</button>
+                            <button onClick={()=>setAcceptModalApp(a)} className="px-3.5 py-1.5 rounded-xl text-[11px] font-bold bg-emerald-500 hover:bg-emerald-600 text-white shadow-lg shadow-emerald-500/20 transition cursor-pointer">Accepter ✓</button>
                             <button onClick={()=>setAppStatus(a.id,"REFUSEE")} className="px-3 py-1.5 rounded-lg text-[11px] font-bold bg-red-500 text-white hover:bg-red-600 transition">Refuser</button>
                           </div>
                         )}

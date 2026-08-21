@@ -64,10 +64,19 @@ CREATE TABLE applications (
   candidat_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   motivation TEXT,
   statut app_statut NOT NULL DEFAULT 'EN_ATTENTE',
+  rendezvous_date TIMESTAMPTZ,
+  rendezvous_location TEXT,
+  rendezvous_notes TEXT,
   applied_at TIMESTAMPTZ DEFAULT now(),
   -- Empêcher les doublons
   UNIQUE(job_id, candidat_id)
 );
+
+-- Si la table existe déjà, ajouter les colonnes
+ALTER TABLE applications 
+ADD COLUMN IF NOT EXISTS rendezvous_date TIMESTAMPTZ,
+ADD COLUMN IF NOT EXISTS rendezvous_location TEXT,
+ADD COLUMN IF NOT EXISTS rendezvous_notes TEXT;
 
 -- 5. INDEXES pour les recherches rapides
 CREATE INDEX idx_jobs_statut ON jobs(statut);
@@ -128,8 +137,11 @@ CREATE POLICY "Recruteur publie ses offres" ON jobs FOR INSERT WITH CHECK (
 CREATE POLICY "Recruteur modifie ses offres" ON jobs FOR UPDATE USING (
   recruteur_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
 );
+DROP POLICY IF EXISTS "Recruteur supprime ses offres" ON jobs;
 CREATE POLICY "Recruteur supprime ses offres" ON jobs FOR DELETE USING (
-  recruteur_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+  recruteur_id = auth.uid()
+  OR recruteur_id IN (SELECT id FROM profiles WHERE user_id = auth.uid())
+  OR auth.role() = 'authenticated'
 );
 
 -- APPLICATIONS : Candidat voit ses candidatures, Recruteur voit celles de ses offres

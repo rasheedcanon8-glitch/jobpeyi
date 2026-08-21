@@ -57,9 +57,18 @@ CREATE TABLE applications (
   candidat_id UUID NOT NULL REFERENCES profiles(id) ON DELETE CASCADE,
   motivation TEXT,
   statut app_statut NOT NULL DEFAULT 'EN_ATTENTE',
+  rendezvous_date TIMESTAMPTZ,
+  rendezvous_location TEXT,
+  rendezvous_notes TEXT,
   applied_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE(job_id, candidat_id)
 );
+
+-- Si la table existe déjà, ajouter les colonnes
+ALTER TABLE applications 
+ADD COLUMN IF NOT EXISTS rendezvous_date TIMESTAMPTZ,
+ADD COLUMN IF NOT EXISTS rendezvous_location TEXT,
+ADD COLUMN IF NOT EXISTS rendezvous_notes TEXT;
 
 CREATE INDEX idx_jobs_statut ON jobs(statut);
 CREATE INDEX idx_jobs_departement ON jobs(departement);
